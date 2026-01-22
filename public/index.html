@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metropolitan - Crédito que impulsiona seus melhores planos</title>
+    <meta name="description" content="Empréstimos e financiamentos com garantia de imóvel. Processo 100% online, rápido e seguro. Simule agora!">
+    <meta name="keywords" content="empréstimo, financiamento, crédito, garantia de imóvel, energia solar, construção, consórcio">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Metropolitan - Crédito que impulsiona seus melhores planos">
+    <meta property="og:description" content="Empréstimos e financiamentos com garantia de imóvel. Processo 100% online, rápido e seguro.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.metropolitan.com.br">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <!-- Security Alert Banner -->
+    <div class="security-banner">
+        <div class="container">
+            <div class="security-content">
+                <div class="security-message">
+                    <i data-feather="alert-circle"></i>
+                    <span>A Metropolitan não solicita depósito ou pagamento antecipado para aprovação de crédito.</span>
+                </div>
+                <div class="security-actions">
+                    <a href="#" class="security-link">Evite Golpes</a>
+                    <button class="security-close" onclick="closeSecurityBanner()">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <!-- Logo -->
+                <div class="logo">
+                    <span class="logo-cash">Cash</span><span class="logo-me">Me</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop">
+                    <div class="nav-item dropdown">
+                        <button class="nav-button">
+                            Para você
+                            <i data-feather="chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#">Empréstimo com garantia de imóvel</a>
+                            <a href="#">Financiamento para construção</a>
+                            <a href="#">Financiamento para energia solar</a>
+                            <a href="#">Financiamento imobiliário</a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item dropdown">
+                        <button class="nav-button">
+                            Para seu negócio
+                            <i data-feather="chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#">Crédito com garantia de imóvel</a>
+                            <a href="#">Financiamento para energia solar</a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item dropdown">
+                        <button class="nav-button">
+                            Para seu condomínio
+                            <i data-feather="chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#">Empréstimo para condomínios</a>
+                            <a href="#">Financiamento para energia solar</a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item dropdown">
+                        <button class="nav-button">
+                            A 
+                            <i data-feather="chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#">Quem somos</a>
+                            <a href="#">Como funciona</a>
+                            <a href="#">Segurança</a>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="nav-link">Seja parceiro</a>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="header-actions">
+                    <button class="btn btn-secondary">Sou cliente</button>
+                    <button class="btn btn-primary">Sou parceiro</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="container">
+                <div class="mobile-menu-content">
+                    <div class="mobile-nav-section">
+                        <h4>Para você</h4>
+                        <a href="#">Empréstimo com garantia de imóvel</a>
+                        <a href="#">Financiamento para construção</a>
+                        <a href="#">Financiamento para energia solar</a>
+                        <a href="#">Financiamento imobiliário</a>
+                    </div>
+                    
+                    <div class="mobile-nav-section">
+                        <h4>Para seu negócio</h4>
+                        <a href="#">Crédito com garantia de imóvel</a>
+                        <a href="#">Financiamento para energia solar</a>
+                    </div>
+                    
+                    <div class="mobile-nav-section">
+                        <h4>Para seu condomínio</h4>
+                        <a href="#">Empréstimo para condomínios</a>
+                        <a href="#">Financiamento para energia solar</a>
+                    </div>
+                    
+                    <div class="mobile-nav-section">
+                        <h4>A </h4>
+                        <a href="#">Quem somos</a>
+                        <a href="#">Como funciona</a>
+                        <a href="#">Segurança</a>
+                    </div>
+                    
+                    <div class="mobile-actions">
+                        <button class="btn btn-secondary btn-full">Sou cliente</button>
+                        <button class="btn btn-primary btn-full">Sou parceiro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <p class="hero-label">EMPRÉSTIMO</p>
+                    <h1 class="hero-title">
+                        <span class="text-dark">Crédito que</span><br>
+                        <span class="text-accent">impulsiona seus</span><br>
+                        <span class="text-accent">melhores planos</span>
+                    </h1>
+                    <p class="hero-description">
+                        Use o seu imóvel e tenha acesso ao crédito mais rápido, 
+                        com o nosso processo simplificado e 100% online.
+                    </p>
+                    <button class="btn btn-primary btn-large">
+                        Simule agora
+                        <i data-feather="arrow-right"></i>
+                    </button>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Casal feliz comemorando conquista do lar">
+                    <div class="hero-floating-element hero-element-1"></div>
+                    <div class="hero-floating-element hero-element-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Tabs Section -->
+    <section class="products-section">
+        <div class="container">
+            <div class="tabs">
+                <div class="tabs-nav">
+                    <button class="tab-btn active" onclick="showTab('para-voce')">PARA VOCÊ</button>
+                    <button class="tab-btn" onclick="showTab('para-seu-negocio')">PARA SEU NEGÓCIO</button>
+                </div>
+
+                <!-- Para Você Tab -->
+                <div class="tab-content active" id="para-voce">
+                    <div class="tab-header">
+                        <h2>Veja os empréstimos que temos para você</h2>
+                        <p>Conheça os produtos que combinam com a sua necessidade.</p>
+                    </div>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Empréstimo com garantia de imóvel">
+                            </div>
+                            <div class="product-content">
+                                <h3>Empréstimo com garantia de imóvel</h3>
+                                <p>Tenha seu imóvel como fonte de suas realizações.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Financiamento para Construção">
+                            </div>
+                            <div class="product-content">
+                                <h3>Financiamento para Construção</h3>
+                                <p>Encontre flexibilidade para construir seus projetos.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Financiamento para Energia Solar">
+                            </div>
+                            <div class="product-content">
+                                <h3>Financiamento para Energia Solar</h3>
+                                <p>Reduza seus custos com energia elétrica e invista no futuro.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Financiamento Imobiliário">
+                            </div>
+                            <div class="product-content">
+                                <h3>Financiamento Imobiliário (SFI)</h3>
+                                <p>Financie seu imóvel e concretize seus sonhos.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Para Seu Negócio Tab -->
+                <div class="tab-content" id="para-seu-negocio">
+                    <div class="tab-header">
+                        <h2>Empréstimos que combinam com o seu negócio</h2>
+                        <p>Tenha acesso ao crédito rápido e digital, exclusivo para empresas.</p>
+                    </div>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Crédito com garantia de imóvel">
+                            </div>
+                            <div class="product-content">
+                                <h3>Crédito com garantia de imóvel</h3>
+                                <p>Use o imóvel a seu favor e tire seus planos do papel.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Financiamento para Energia Solar">
+                            </div>
+                            <div class="product-content">
+                                <h3>Financiamento para Energia Solar</h3>
+                                <p>Economize recursos e amplie os benefícios da sua empresa.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Condomínio Tab -->
+                <div class="tab-content" id="condominio">
+                    <div class="tab-header">
+                        <h2>Realize projetos no seu condomínio mesmo sem ter dinheiro em caixa</h2>
+                        <p>Transforme para melhor o que já é realidade.</p>
+                    </div>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Empréstimo para condomínios">
+                            </div>
+                            <div class="product-content">
+                                <h3>Empréstimo para condomínios</h3>
+                                <p>Renove os condomínios e valorize os imóveis.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Financiamento para Energia Solar">
+                            </div>
+                            <div class="product-content">
+                                <h3>Financiamento para Energia Solar</h3>
+                                <p>Produza a própria energia do seu condomínio e valorize os imóveis.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consórcio Tab -->
+                <div class="tab-content" id="consorcio">
+                    <div class="tab-header">
+                        <h2>Planeje suas conquistas com segurança e economia</h2>
+                        <p>Opções com parcelas reduzidas até a contemplação. Sem juros e taxa de adesão.</p>
+                    </div>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Consórcio de Veículos">
+                            </div>
+                            <div class="product-content">
+                                <h3>Consórcio de Veículos</h3>
+                                <p>O carro que você sempre quis de um jeito que nunca imaginou.</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Consórcio de Imóveis">
+                            </div>
+                            <div class="product-content">
+                                <h3>Consórcio de Imóveis</h3>
+                                <p>Invista em casas, apartamentos e muito mais!</p>
+                                <a href="#" class="product-link">
+                                    Saiba mais <i data-feather="arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Vantagens</h2>
+                <p>Por que escolher a  para realizar seus projetos</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-feather="check-circle"></i>
+                    </div>
+                    <h3>Facilidade e transparência</h3>
+                    <p>Consiga crédito com agilidade e clareza para realizar os seus projetos com confiança.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-feather="zap"></i>
+                    </div>
+                    <h3>Flexibilidade</h3>
+                    <p>Diferentes opções de crédito adaptadas às suas necessidades específicas.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-feather="shield"></i>
+                    </div>
+                    <h3>Soluções tecnológicas</h3>
+                    <p>Processo 100% digital com segurança e praticidade em todas as etapas.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i data-feather="users"></i>
+                    </div>
+                    <h3>Atendimento humanizado</h3>
+                    <p>Suporte especializado para tirar suas dúvidas e orientar suas decisões.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-content">
+                <div class="section-header">
+                    <div class="faq-icon">
+                        <i data-feather="help-circle"></i>
+                    </div>
+                    <h2>Ajuda</h2>
+                    <p>Tire suas dúvidas sobre nossos produtos e serviços</p>
+                </div>
+                
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>Quem é a ?</h3>
+                        <p class="faq-category">Sobre a empresa</p>
+                        <span class="faq-indicator">* * *</span>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Vocês atendem a todo o Brasil?</h3>
+                        <p class="faq-category">Atendimento</p>
+                        <span class="faq-indicator">* * *</span>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Como funciona o empréstimo com garantia de imóvel?</h3>
+                        <p class="faq-category">Produtos</p>
+                        <span class="faq-indicator">* * *</span>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Qual a taxa de juros?</h3>
+                        <p class="faq-category">Condições</p>
+                        <span class="faq-indicator">* * *</span>
+                    </div>
+                </div>
+                
+                <div class="faq-actions">
+                    <button class="btn btn-secondary">Ver todas as respostas</button>
+                    <p>Não encontrou o que procurava?</p>
+                    <button class="btn btn-primary">
+                        <i data-feather="message-circle"></i>
+                        Fale com a gente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-cash">Cash</span><span class="logo-me">Me</span>
+                    </div>
+                    <p>Crédito inteligente para impulsionar seus sonhos. Processo 100% digital, seguro e transparente.</p>
+                    <div class="social-links">
+                        <a href="#"><i data-feather="facebook"></i></a>
+                        <a href="#"><i data-feather="instagram"></i></a>
+                        <a href="#"><i data-feather="linkedin"></i></a>
+                        <a href="#"><i data-feather="youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Para você</h4>
+                        <a href="#">Empréstimo com garantia de imóvel</a>
+                        <a href="#">Financiamento para construção</a>
+                        <a href="#">Financiamento para energia solar</a>
+                        <a href="#">Financiamento imobiliário</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Para seu negócio</h4>
+                        <a href="#">Crédito com garantia de imóvel</a>
+                        <a href="#">Financiamento para energia solar</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Condomínio</h4>
+                        <a href="#">Empréstimo para condomínios</a>
+                        <a href="#">Financiamento para energia solar</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Consórcio</h4>
+                        <a href="#">Consórcio de veículos</a>
+                        <a href="#">Consórcio de imóveis</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>A Metropolitan</h4>
+                        <a href="#">Quem somos</a>
+                        <a href="#">Como funciona</a>
+                        <a href="#">Segurança</a>
+                        <a href="#">Seja parceiro</a>
+                        <a href="#">Trabalhe conosco</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Metropolitan. Todos os direitos reservados.</p>
+                <div class="footer-legal">
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Ouvidoria</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        feather.replace()
+    </script>
+</body>
+</html>
