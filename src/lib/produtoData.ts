@@ -1,6 +1,4 @@
-// src/lib/productsData.ts
 
-// 1. Importamos todas as imagens necessárias para os produtos
 import homeEquityImage from "@/assets/home-equity.jpg";
 import carConsortiumImage from "@/assets/car-consortium.jpg";
 import carFinancimentoImage from "@/assets/carro.jpg";
@@ -14,9 +12,8 @@ import estruturaImage from "@/assets/estrutura.png";
 import maquininhaImage from "@/assets/maquininha.png";
 import recebiveisImage from "@/assets/recebiveis.png";
 
-// 2. Definimos a estrutura de um produto
 export interface Product {
-  id: string; // URL amigável (slug)
+  id: string; 
   category: 'para-voce' | 'para-seu-negocio';
   title: string;
   description: string;
@@ -82,7 +79,7 @@ export const products: Record<string, Product> = {
     ]
   },
 
-  // --- PRODUTOS "PARA SEU NEGÓCIO" ---
+
   
   'capital-de-giro': {
     id: 'capital-de-giro',

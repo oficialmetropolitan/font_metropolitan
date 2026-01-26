@@ -1,87 +1,95 @@
 import { Button } from "@/components/ui/button";
-import { HelpCircle, MessageCircle } from "lucide-react";
-import { Link } from "react-router-dom"; // 1. Importe o componente Link
+import { HelpCircle, MessageCircle, ChevronRight, ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const FAQ = () => {
   const faqs = [
     {
       question: "Quem é a Metropolitan?",
-      category: "A Metropolitan é uma promotora de crédito inovadora que atua como correspondente bancário, facilitando o acesso a diversas soluções financeiras. Nosso objetivo é oferecer um serviço transparente, ágil e seguro para pessoas físicas e jurídicas em todo o Brasil."
+      answer: "Uma securitizadora de ativos financeiros focada em estruturar soluções de crédito inteligentes, utilizando tecnologia e parcerias bancárias para oferecer agilidade e taxas competitivas."
     },
     {
-      question: "Vocês atendem a todo o Brasil?",
-      category: "Sim! Nossa plataforma é 100% digital, o que nos permite atender clientes de todas as regiões do Brasil com a mesma eficiência e qualidade, sem a necessidade de deslocamento a uma agência física."
+      question: "Atendimento em todo o território nacional?",
+      answer: "Sim. Nossa operação é integralmente digital, permitindo que clientes de qualquer região do Brasil acessem nossas soluções com a mesma eficiência e segurança jurídica."
     },
     {
-      question: "Como funciona o empréstimo com garantia de imóvel?",
-      category: "O empréstimo com garantia de imóvel, também conhecido como Home Equity, permite que você utilize seu imóvel quitado como garantia para obter crédito com taxas de juros mais baixas e prazos de pagamento mais longos. O imóvel continua sendo seu e você pode usar o dinheiro como quiser."
+      question: "O diferencial do Home Equity?",
+      answer: "O crédito com garantia de imóvel permite as menores taxas do mercado e prazos estendidos. O bem permanece em seu nome, servindo apenas como lastro para uma operação de baixo custo."
     },
     {
-      question: "Qual a taxa de juros?",
-      category: "As taxas de juros variam de acordo com o produto de crédito escolhido, o valor solicitado, o prazo de pagamento e a análise de crédito do seu perfil. Nosso compromisso é buscar sempre as condições mais competitivas e transparentes para você.",
+      question: "Transparência nas taxas de juros?",
+      answer: "Nossas taxas são personalizadas conforme a análise de risco e o perfil de cada operação, garantindo que você tenha acesso à estrutura de custos mais eficiente para seu projeto."
     }
   ];
 
   return (
-    <section className="section-padding bg-white">
-      <div className="container-custom">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center space-y-4 mb-12">
-            <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
-              <HelpCircle className="w-8 h-8 text-primary" />
+    <section className="py-24 bg-[#F8F9FA] relative overflow-hidden">
+      {/* Detalhe de luxo: Linhas de fundo sutis */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+        <svg width="100%" height="100%"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="black" strokeWidth="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)" /></svg>
+      </div>
+
+      <div className="container-custom relative z-10">
+        <div className="max-w-5xl mx-auto">
+          
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-20 border-b border-gray-200 pb-12">
+            <div className="text-left space-y-2">
+              <span className="text-primary font-bold tracking-[0.3em] text-xs uppercase">Suporte Exclusivo</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-navy-dark tracking-tighter">
+                Dúvidas <span className="text-gray-400 font-light">Frequentes</span>
+              </h2>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy-dark">
-              Ajuda
-            </h2>
-            <p className="text-lg text-gray-600">
-              Tire suas dúvidas sobre nossos produtos e serviços
+            <p className="text-gray-500 max-w-xs text-sm leading-relaxed font-light italic">
+              "Transparência é o pilar que sustenta nossa relação com o mercado de capitais e nossos clientes."
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-10 mb-16">
             {faqs.map((faq, index) => (
-              // 2. Adicione o Link envolvendo cada card
-              <Link to="/ajuda" key={index}>
-                <div 
-                  className="group p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer h-full"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-navy-dark group-hover:text-primary transition-colors">
-                        {faq.question}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {faq.category}
-                      </p>
-                    </div>
-                    <div className="text-gray-400 group-hover:text-primary transition-colors">
-                      * * *
-                    </div>
+              <Link to="/ajuda" key={index} className="group">
+                <div className="space-y-4 p-2 transition-all duration-300">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-4 group-hover:border-primary transition-colors">
+                    <h3 className="font-bold text-lg text-navy-dark group-hover:text-primary transition-colors pr-4">
+                      {faq.question}
+                    </h3>
+                    <ArrowUpRight className="h-5 w-5 text-gray-300 group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
                   </div>
+                  <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
+                    {faq.answer}
+                  </p>
                 </div>
               </Link>
             ))}
           </div>
 
-          <div className="text-center">
-            {/* 3. Adicione o Link envolvendo o botão */}
+          <div className="flex flex-col items-center gap-12">
             <Link to="/ajuda">
-              <Button variant="outline" className="btn-secondary mb-6">
-                Ver todas as respostas
+              <Button variant="ghost" className="text-navy-dark font-bold hover:bg-transparent hover:text-primary p-0 flex items-center gap-2 group">
+                CENTRAL DE AJUDA COMPLETA 
+                <span className="w-8 h-8 rounded-full bg-navy-dark text-white flex items-center justify-center group-hover:bg-primary transition-colors">
+                    <ChevronRight className="h-4 w-4" />
+                </span>
               </Button>
             </Link>
             
-            <div className="space-y-4">
-              <p className="text-gray-600">
-                Não encontrou o que procurava?
-              </p><br></br>
- <Link to="/contato">
-    <Button className="btn-primary group">
-        <MessageCircle className="mr-2 h-4 w-4" />
-        Fale com a gente
-    </Button>
-</Link>
-
+            <div className="w-full max-w-3xl bg-navy-dark rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
+              {/* Efeito de luz no card de contato */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -mr-32 -mt-32"></div>
+              
+              <div className="relative z-10 space-y-6">
+                <h3 className="text-2xl md:text-3xl font-bold">Ainda precisa de consultoria?</h3>
+                <p className="text-gray-400 max-w-lg mx-auto font-light">
+                  Nossos especialistas em estruturação de crédito estão à disposição para um atendimento humanizado e personalizado.
+                </p>
+                <div className="pt-4">
+                  <Link to="/contato">
+                    <Button className="bg-primary hover:bg-white hover:text-navy-dark text-white px-8 py-7 rounded-full text-sm font-bold tracking-widest transition-all duration-500 shadow-xl">
+                      <MessageCircle className="mr-2 h-5 w-5" />
+                      FALAR COM UM ESPECIALISTA
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -78,9 +78,7 @@ const AppRoutes = () => {
       <Route 
         path="/simulacao" 
         element={
-          <ProtectedRoute>
             <SimulationPage />
-          </ProtectedRoute>
         } 
       />
            <Route 

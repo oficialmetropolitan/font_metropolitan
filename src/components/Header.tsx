@@ -26,12 +26,12 @@ const Header = () => {
   const menuItems = [
     {
       label: "Para você",
-      items: ["Empréstimo com garantia de imóvel", "Empréstimo com garantia de veículos", "Financiamento de veículos", "Empréstimo pessoal"]
+      items: ["Empréstimo pessoal", "Emprestimo consignado",]
     },
     {
       label: "Para seu negócio", 
       items: [
-        "MedPlan (crédito para área da saúde)", "Capital de Giro", "Leasing",
+    "Capital de Giro", 
         "Financiamentos", "Operações Estruturadas", "Adiantamento de Recebíveis",
         "Trava de Maquininha (garantia de recebíveis)"
       ]
@@ -85,11 +85,11 @@ const Header = () => {
                     <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                       <div className="p-4 space-y-3">
                         
-                        {/* AQUI ESTÁ A MUDANÇA: Usamos <Link> em vez de <a> */}
+                 
                         {item.items.map((subItem, subIndex) => (
                           <Link 
                             key={subIndex} 
-                            to={subItem.href} // ex: /produto/imovel-garantia
+                            to={subItem.href} 
                             className="block text-sm text-gray-600 hover:text-primary transition-colors py-2 border-b border-gray-100 last:border-0"
                           >
                             {subItem.label}

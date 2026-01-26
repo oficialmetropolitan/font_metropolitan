@@ -32,27 +32,3 @@ export async function updateProfile(data: Profile): Promise<ProfileResponse> {
   return response.data;
 }
 
-// Serviços de simulação
-export async function createSimulation(
-  data: SimulationRequest
-): Promise<SimulationResponse> {
-  const token = localStorage.getItem("token");
-  if (!token) throw new Error("Usuário não autenticado");
-
-  const response = await api.post<SimulationResponse>("/api/simulacoes", data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  return response.data;
-}
-
-export async function getSimulations(): Promise<SimulationResponse[]> {
-  const token = localStorage.getItem("token");
-  if (!token) throw new Error("Usuário não autenticado");
-
-  const response = await api.get<SimulationResponse[]>("/api/simulacoes", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  return response.data;
-}

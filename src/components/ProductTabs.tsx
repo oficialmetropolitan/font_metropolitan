@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductCard from "./ProductCard";
-import { products } from "@/lib/produtoData"; 
+import { products } from "@/lib/produtoData";
+import { motion, AnimatePresence } from "framer-motion"; // Opcional: para animações suaves
 
 const allProducts = Object.values(products);
 
@@ -10,64 +11,106 @@ const ProductTabs = () => {
 
   const productSections = {
     "para-voce": {
-      title: "Veja os empréstimos que temos para você",
-      subtitle: "Conheça os produtos que combinam com a sua necessidade.",
+      badge: "Pessoa Física",
+      title: "Soluções sob medida para sua vida",
+      subtitle: "Crédito estruturado para realizar grandes planos com a segurança que você merece.",
       products: allProducts.filter(p => p.category === 'para-voce'),
     },
     "para-seu-negocio": {
-      title: "Empréstimos que combinam com o seu negócio",
-      subtitle: "Tenha acesso ao crédito rápido e digital, exclusivo para empresas.",
+      badge: "Corporate & SMB",
+      title: "Impulsione o crescimento da sua empresa",
+      subtitle: "Capital estratégico e soluções financeiras digitais para empresas que buscam o próximo nível.",
       products: allProducts.filter(p => p.category === 'para-seu-negocio'),
     },
   };
 
   return (
-    <section className="section-padding bg-white">
+    <section className="py-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-white overflow-hidden">
       <div className="container-custom">
-        {/* Adicionado max-w-4xl e mx-auto para os botões não ficarem largos demais em telas gigantes */}
+        
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-2 mb-12 bg-gray-100 p-1 rounded-xl">
-            <TabsTrigger 
-              value="para-voce"
-              className="data-[state=active]:bg-primary data-[state=active]:text-white font-medium"
-            >
-              PARA VOCÊ
-            </TabsTrigger>
-            <TabsTrigger 
-              value="para-seu-negocio"
-              className="data-[state=active]:bg-primary data-[state=active]:text-white font-medium"
-            >
-              PARA SEU NEGÓCIO
-            </TabsTrigger>
-          </TabsList>
+          {/* Tabs Centralizadas e Minimalistas */}
+          <div className="flex justify-center mb-16">
+            <TabsList className="inline-flex h-14 items-center justify-center rounded-full bg-gray-100/80 p-1.5 backdrop-blur-md border border-gray-200 shadow-inner">
+              <TabsTrigger 
+                value="para-voce"
+                className="rounded-full px-8 py-2.5 text-sm font-bold tracking-wide transition-all data-[state=active]:bg-navy-dark data-[state=active]:text-white data-[state=active]:shadow-lg"
+              >
+                PARA VOCÊ
+              </TabsTrigger>
+              <TabsTrigger 
+                value="para-seu-negocio"
+                className="rounded-full px-8 py-2.5 text-sm font-bold tracking-wide transition-all data-[state=active]:bg-navy-dark data-[state=active]:text-white data-[state=active]:shadow-lg"
+              >
+                PARA SEU NEGÓCIO
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {Object.entries(productSections).map(([key, section]) => (
-            <TabsContent key={key} value={key} className="space-y-12">
-              <div className="text-center space-y-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-navy-dark max-w-4xl mx-auto">
-                  {section.title}
-                </h2>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <TabsContent 
+              key={key} 
+              value={key} 
+              className="mt-0 focus-visible:outline-none outline-none ring-0"
+            >
+              {/* Header da Seção */}
+              <div className="text-center space-y-5 mb-20">
+                <motion.span 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-[0.2em]"
+                >
+                  {section.badge}
+                </motion.span>
+                
+              <motion.h2 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ delay: 0.1 }} 
+                className="text-xl md:text-4xl font-extrabold text-navy-dark tracking-tight leading-tight max-w-3xl mx-auto"
+              >
+                {section.title}
+              </motion.h2>
+                
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light"
+                >
                   {section.subtitle}
-                </p>
+                </motion.p>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-8">
-                {section.products.map((product) => (
-                  <div key={product.id} className="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-[300px]">
-                    <ProductCard
-                      title={product.title}
-                      description={product.description}
-                      image={product.image}
-                      link={`/produto/${product.id}`} 
-                    />
-                  </div>
+        
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 max-w-4xl mx-auto px-4">
+                {section.products.map((product, index) => (
+                  <motion.div 
+                    key={product.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.1 + 0.3 }}
+                    className="flex justify-center"
+                  >
+                    <div className="w-full transition-transform duration-500 hover:-translate-y-2">
+                      <ProductCard
+                        title={product.title}
+                        description={product.description}
+                        image={product.image}
+                        link={`/produto/${product.id}`} 
+                      />
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </TabsContent>
           ))}
         </Tabs>
       </div>
+      
+      {/* Detalhe de Decoração Abstrato */}
+      <div className="absolute top-1/2 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10 -translate-x-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -z-10 translate-x-1/3"></div>
     </section>
   );
 };
