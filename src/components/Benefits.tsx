@@ -27,7 +27,7 @@ const Benefits = () => {
 
   return (
     <section className="py-24 bg-white relative overflow-hidden">
-      {/* Elemento de fundo sutil */}
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none"></div>
 
       <div className="container-custom relative z-10">
@@ -56,7 +56,7 @@ const Benefits = () => {
               
               <div className="relative z-10 space-y-8">
                 <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-50 group-hover:bg-white/10 group-hover:rotate-[360deg] transition-all duration-700">
-                  <benefit.icon className="w-6 h-6 text-primary group-hover:text-accent" />
+                  <benefit.icon className="w-6 h-6 text-primary group-hover:text-accent group-hover:text-white " />
                 </div>
                 
                 <div className="space-y-4">
@@ -74,7 +74,6 @@ const Benefits = () => {
           ))}
         </div>
 
-        {/* Disclaimer de Securitização sutil no rodapé da seção */}
         <div className="mt-16 text-center">
           <p className="text-[10px] text-gray-400 uppercase tracking-[0.2em]">
             Modelo de Securitização e Inteligência Financeira Autorizada

@@ -61,10 +61,22 @@ export const products: Record<string, Product> = {
     image: dinheiroImage,
     headline: 'Dinheiro rápido na sua conta para o que você precisar.',
     howItWorks: [
-        { title: '1. Pedido Online', description: 'Preencha um formulário simples com seus dados e o valor que precisa.' },
-        { title: '2. Análise Instantânea', description: 'Nossa tecnologia analisa seu perfil de crédito em poucos minutos.' },
-        { title: '3. Proposta Personalizada', description: 'Receba uma ou mais ofertas de crédito com taxas e parcelas claras.' },
-        { title: '4. Dinheiro na Conta', description: 'Aceite a proposta, assine o contrato digital e receba o dinheiro em até 24 horas úteis.' },
+       { 
+    title: '1. Simulação Digital', 
+    description: 'Realize uma simulação rápida para entendermos seu perfil e o potencial de crédito do seu ativo.' 
+  },
+  { 
+    title: '2. Consultoria Especializada', 
+    description: 'Um de nossos especialistas entrará em contato para entender seus objetivos e refinar os detalhes técnicos.' 
+  },
+  { 
+    title: '3. Proposta Estruturada', 
+    description: 'Analisamos as melhores opções do mercado para apresentar uma proposta personalizada com taxas otimizadas.' 
+  },
+  { 
+    title: '4. Formalização e Liquidez', 
+    description: 'Após sua aprovação, cuidamos da assinatura digital e da liberação do recurso com total agilidade.' 
+  },
     ],
     advantages: [
         { title: 'Totalmente Digital', description: 'Faça todo o processo do seu celular ou computador, sem sair de casa.' },

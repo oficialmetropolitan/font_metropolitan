@@ -25,7 +25,7 @@ const ProductTabs = () => {
   };
 
   return (
-    <section className="py-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-white overflow-hidden">
+    <section className="py-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-white overflow-hidden" >
       <div className="container-custom">
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -83,7 +83,7 @@ const ProductTabs = () => {
               </div>
 
         
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 max-w-4xl mx-auto px-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 max-w-4xl mx-auto px-4"  id="solucao">
                 {section.products.map((product, index) => (
                   <motion.div 
                     key={product.id}

@@ -28,6 +28,7 @@ import MySimulationsPage from "./pages/MinhaSimulacaopage";
 
 import { AdminRoute } from "./components/AdminRoute";
 import AdminDashboard from "./pages/AdminDashboard";
+import SobreNos from "./pages/SobreNosPage";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const AppRoutes = () => {
        <Route path="/redefinir-senha" element={<RedefinirSenhaPage />} />
       <Route path="/esqueci-senha" element={<EsqueciSenhaPage />} />
       <Route path="/EviteGolpes" element={<PaginaSeguranca />} />
+      <Route path="/sobreNos" element={<SobreNos />} />
 
       
       <Route 

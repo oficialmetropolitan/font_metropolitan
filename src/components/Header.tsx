@@ -99,6 +99,7 @@ const Header = () => {
                     </div>
                   </div>
                 ))}
+                <a href="/sobreNos">Sobre Nós </a>
               </nav>
             </div>
 
@@ -125,13 +126,13 @@ const Header = () => {
                   </Button>
                 </>
               ) : (
-                // Se NÃO estiver autenticado, mostra os botões ENTRAR e SIMULAR
+
                 <>
                   <Button variant="outline" className="btn-secondary" asChild>
                     <Link to="/login">Entrar</Link>
                   </Button>
                   <Button className="btn-primary" asChild>
-                    <Link to="/simulacao">Simular</Link>
+                    <Link to="#simulacao">Simular</Link>
                   </Button>
                 </>
               )}

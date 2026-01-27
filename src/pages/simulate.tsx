@@ -1,5 +1,5 @@
 // src/pages/SimulacaoPage.tsx
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { useForm, Controller, FieldValues, Control, useWatch } from 'react-hook-form';
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 // FIM NOVOS IMPORTS
 import { toast } from "sonner";
 import api from "@/services/http/axios";
-import { ArrowRight, Loader2, UserPlus } from "lucide-react";
+import { ArrowRight, Loader2, RefreshCcw, UserPlus } from "lucide-react";
 import Header from '@/components/Header';
 import InputMask from 'react-input-mask';
 import CurrencyInput from 'react-currency-input-field'
@@ -40,6 +40,7 @@ interface SimulacaoFormData {
   data_nascimento: string;
   cidade: string;
   estado: string;
+  possui_garantia?: string;
 }
 
 interface SimulacaoResultado {
@@ -813,21 +814,15 @@ const renderSpecificQuestions = (tipo: string, control: Control<FieldValues>) =>
 
 const SimulacaoPage = () => {
   
-
-
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  
-  // Tipagem explícita para o resultado
   const [resultado, setResultado] = useState<SimulacaoResultado | null>(null);
   const [showLeadForm, setShowLeadForm] = useState(false);
 
-  const tipoEmprestimo = location.state?.tipo;
+  const tipoEmprestimoOriginal = location.state?.tipo;
 
-  // Inicialização com defaultValues evita que o input comece como undefined
   const form = useForm<SimulacaoFormData>({
-    
     defaultValues: {
       valor_desejado: 0,
       prazo_meses: "",
@@ -838,26 +833,38 @@ const SimulacaoPage = () => {
       data_nascimento: "",
       cidade: "",
       estado: "",
-      
+      possui_garantia: "nenhum"
     }
   });
-const motivoSelecionado = useWatch({
-  control: form.control,
-  name: "motivo_emprestimo",
-});
-  if (!tipoEmprestimo) {
+
+  // --- LÓGICA DE TROCA DE TIPO (GARANTIA) ---
+  const garantiaSelecionada = useWatch({
+    control: form.control,
+    name: "possui_garantia"
+  });
+
+  const tipoEfetivo = useMemo(() => {
+    if (tipoEmprestimoOriginal === 'emprestimo-pessoal') {
+      if (garantiaSelecionada === 'imovel') return 'imovel-garantia';
+      if (garantiaSelecionada === 'veiculo') return 'veiculo-garantia';
+    }
+    return tipoEmprestimoOriginal;
+  }, [tipoEmprestimoOriginal, garantiaSelecionada]);
+
+  const motivoSelecionado = useWatch({ control: form.control, name: "motivo_emprestimo" });
+
+  if (!tipoEmprestimoOriginal) {
     toast.error("Selecione um produto para simular.");
     return <Navigate to="/" replace />;
   }
 
-  // 1. AÇÃO: CALCULAR
   const handleCalcular = async (data: FieldValues) => {
     setIsLoading(true);
     try {
       const response = await api.post("/api/simulacoes/calcular-imediato", {
         valor_desejado: Number(data.valor_desejado),
         prazo_meses: parseInt(data.prazo_meses),
-        tipo_emprestimo: tipoEmprestimo
+        tipo_emprestimo: tipoEfetivo // Enviando o tipo corrigido para o backend
       });
       setResultado(response.data);
       setShowLeadForm(true);
@@ -869,6 +876,7 @@ const motivoSelecionado = useWatch({
     }
   };
 
+
 const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' | 'login') => {
     setIsLoading(true);
     try {
@@ -876,20 +884,33 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
         ...data,
         valor_desejado: Number(data.valor_desejado),
         prazo_meses: Number(data.prazo_meses),
-        tipo_emprestimo: location.state?.tipo,
+        tipo_emprestimo: tipoEfetivo,
         dados_entrada: data,
-        resultado_simulacao: resultado // Dados calculados anteriormente
+        resultado_simulacao: resultado 
       };
 
-      // SALVAMENTO NO BANCO (Como Lead)
       await api.post("/api/simulacoes/salvar-lead", payload);
       toast.success("Dados registrados na Metropolitan!");
 
       if (destino === 'whatsapp') {
-        const msg = `Olá! Fiz uma simulação de R$${resultado?.valor_total}.`;
-        window.open(`https://wa.me/5535999999999?text=${encodeURIComponent(msg)}`, '_blank');
+          const msg = `Olá! Meu nome é *${data.full_name}*.
+          *Dados Pessoais:*
+            *Nascimento:* ${new Date(data.data_nascimento).toLocaleDateString('pt-BR')}
+            *Cidade/UF:* ${data.cidade} - ${data.estado}
+            *E-mail:* ${data.email}
+            *Numero de Telefone:* ${data.phone}
+
+          *Detalhes da Simulação:*
+            *Valor Solicitado:* R$ ${data.valor_desejado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+            *Produto:* ${tipoEfetivo.toUpperCase()}
+            *Prazo:* ${data.prazo_meses}x de *R$ ${resultado?.valor_parcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}*
+            *Total Estimado:* R$ ${resultado?.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+
+          Tenho interesse em dar prosseguimento ao meu crédito!`.trim();
+
+          window.open(`https://wa.me/5535988284302?text=${encodeURIComponent(msg)}`, '_blank');
       } else {
-        // Envia para o login para que o vínculo (User + Lead) ocorra
+       
         navigate('/login', { state: { email: data.email, nome: data.full_name } });
       }
     } catch (error) {
@@ -904,18 +925,55 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
     <>
       <Header />
       <div className="max-w-2xl mx-auto py-12 px-4">
-        {resultado && (
-          <Card className="mb-8 border-2 border-green-500 bg-green-50 animate-in zoom-in-95">
-            <CardContent className="pt-6 text-center">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-green-700 font-medium">Parcela Estimada</p>
-                  <p className="text-3xl font-bold text-green-900">R$ {resultado.valor_parcela}</p>
+      {resultado && (
+          <Card className="mb-8 border-2 border-blue-500 bg-white shadow-lg animate-in zoom-in-95 duration-500">
+            <CardContent className="pt-6">
+              <div className="text-center mb-6">
+                <span className="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                  Resultado da Simulação
+                </span>
+              </div>
+
+              <div className="text-center mb-8">
+                <p className="text-sm text-slate-500 font-medium uppercase">Parcela Mensal Estimada</p>
+                <p className="text-5xl font-extrabold text-blue-600">
+                  R$ {resultado.valor_parcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border rounded-lg overflow-hidden">
+                <div className="bg-slate-50 p-4 border-b border-r md:border-b-0 text-center">
+                  <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">Prazo</p>
+                  <p className="text-lg font-semibold text-slate-800">{form.getValues().prazo_meses}x</p>
                 </div>
-                <div>
-                  <p className="text-sm text-green-700 font-medium">Total com Juros</p>
-                  <p className="text-xl font-semibold text-green-800">R$ {resultado.valor_total}</p>
+
+                <div className="bg-slate-50 p-4 border-b md:border-b-0 md:border-r text-center">
+                  <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">Taxa Mensal</p>
+                  <p className="text-lg font-semibold text-blue-600">
+                    {tipoEfetivo === 'imovel-garantia' ? '1,00%' : 
+                     tipoEfetivo === 'veiculo-garantia' ? '1,50%' : '2,00%'}
+                  </p>
                 </div>
+
+                <div className="bg-slate-50 p-4 border-r text-center">
+                  <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">Total Juros</p>
+                  <p className="text-lg font-semibold text-slate-800">
+                    R$ {resultado.juros_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </p>
+                </div>
+
+                <div className="bg-slate-50 p-4 text-center">
+                  <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">Custo Total</p>
+                  <p className="text-lg font-semibold text-slate-800">
+                    R$ {resultado.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-6 flex justify-center">
+                <Button variant="ghost" size="sm" onClick={() => setResultado(null)} className="text-slate-400 hover:text-blue-600 transition-colors">
+                  <RefreshCcw className="mr-2 h-3 w-3" /> Refazer simulação
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -923,8 +981,8 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Simulação Metropolitan</CardTitle>
-            <CardDescription>Configurando simulação para {tipoEmprestimo}</CardDescription>
+            <CardTitle className="text-2xl">Quase lá! Deseja prosseguir?</CardTitle>
+            <CardDescription>Configurando simulação para {tipoEfetivo}</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -971,7 +1029,7 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
 
                    
                     <StepSection step={2} title="Detalhes Adicionais">
-                      {renderSpecificQuestions(tipoEmprestimo, form.control as any)}
+                      {renderSpecificQuestions(tipoEfetivo, form.control as any)}
                     </StepSection>
                   </>
                 ) : (
@@ -1021,15 +1079,17 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
                   </StepSection>
                 )}
 
-                <div className="flex flex-col gap-3 pt-4">
-                  <Button type="submit" disabled={isLoading} size="lg" className="w-full">
+                <div className="flex flex-col gap-4 pt-6">
+                  <Button type="submit" disabled={isLoading} size="lg" className="w-full h-14 text-lg bg-blue-600 hover:bg-blue-700 shadow-md">
                     {isLoading ? <Loader2 className="animate-spin mr-2" /> : (showLeadForm ? 'Finalizar e WhatsApp' : 'Calcular e Ver Resultado')}
                   </Button>
+                  
                   {showLeadForm && (
                     <Button variant="outline" type="button" onClick={form.handleSubmit((data) => handleFinalizarLead(data, 'login'))} className="w-full">
                       <UserPlus className="mr-2 h-4 w-4" /> Continuar no site (Fazer Login)
                     </Button>
                   )}
+
                 </div>
               </form>
             </Form>

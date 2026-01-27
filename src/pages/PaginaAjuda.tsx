@@ -53,15 +53,15 @@ const PaginaAjuda = () => {
       <Header />
       
 
-      <section className="bg-gradient-to-br from-navy-dark to-[#b8d1f2] py-24 relative overflow-hidden">
+<section className="bg-[#1a2a40] pt-24 pb-40 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs><rect width="100%" height="100%" fill="url(#dots)" /></svg>
         </div>
         
         <div className="container-custom max-w-4xl mx-auto px-4 relative z-10 text-center space-y-6">
-          <span className="text-accent font-bold tracking-[0.4em] text-[10px] uppercase ">Suporte e Governança</span>
-          <h1 className="text-4xl md:text-6xl font-extrabold  tracking-tighter">
-            Como podemos <br /><span className="text-gray-400 font-light italic">orientar você hoje?</span>
+          <span className="text-accent font-bold tracking-[0.4em] text-[10px] text-white uppercase ">Suporte e Governança</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold  tracking-tighter text-white">
+            Como podemos <br /><span className="text-gray-400 font-light italic text-gray-400 ">orientar você hoje?</span>
           </h1>
      
         </div>

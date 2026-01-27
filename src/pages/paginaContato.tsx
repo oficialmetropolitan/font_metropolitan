@@ -4,13 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Phone, Mail, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MessageSquare, Clock, ShieldCheck, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import { useToast } from "@/components/ui/use-toast";
-
+import { motion } from "framer-motion"; // Opcional para animação suave
 
 const PaginaContato = () => {
-  // Estados para controlar os valores do formulário
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -20,153 +19,175 @@ const PaginaContato = () => {
   });
 
   const { toast } = useToast();
-  // Função para atualizar o estado quando o usuário digita
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData(prevState => ({ ...prevState, [id]: value }));
   };
 
-  // Função para lidar com a mudança do Select
   const handleSelectChange = (value: string) => {
     setFormData(prevState => ({ ...prevState, assunto: value }));
   };
 
-  // Função para o envio do formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       const response = await fetch("http://127.0.0.1:8000/contact/send-email", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error("Erro ao enviar mensagem.");
-      }
-
-      const data = await response.json();
-      console.log("Resposta da API:", data);
+      if (!response.ok) throw new Error("Erro ao enviar mensagem.");
 
       toast({
-      title: "Mensagem enviada ✅",
-      description: "Recebemos seu contato e responderemos em breve.",
-      className: "bg-green-100 border-green-400 text-green-800",
-    });
-
-      setFormData({
-        nome: "",
-        email: "",
-        telefone: "",
-        assunto: "",
-        mensagem: "",
+        title: "Solicitação Recebida ✅",
+        description: "Um de nossos consultores entrará em contato em breve.",
+        className: "bg-navy-dark text-white border-none",
       });
+
+      setFormData({ nome: "", email: "", telefone: "", assunto: "", mensagem: "" });
     } catch (error) {
-      console.error("Erro:", error);
       toast({
-      title: "Erro ao enviar ❌",
-      description: "Verifique sua conexão e tente novamente.",
-      variant: "destructive",
-    });
+        title: "Erro na Conexão ❌",
+        description: "Não foi possível processar sua solicitação agora.",
+        variant: "destructive",
+      });
     }
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-[#FBFBFC]">
       <Header />
-      <div className="bg-white py-16 sm:py-24">
-        <div className="container-custom">
-          {/* --- Cabeçalho --- */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-navy-dark">
-              Fale com a gente
-            </h1>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-              Tem alguma dúvida ou sugestão? Preencha o formulário abaixo ou entre em contato por um de nossos canais.
-            </p>
-          </div>
+      
+      {/* --- Header de Alto Padrão --- */}
+      <section className="bg-[#1a2a40] pt-24 pb-40 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
+        <div className="container-custom relative z-10 text-center space-y-4">
+          <span className="text-accent font-bold tracking-[0.4em] text-[10px] uppercase text-white ">Contact & Concierge</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tighter">
+            Como podemos <br /><span className="text-gray-400 font-light italic">auxiliar sua jornada?</span>
+          </h1>
+        </div>
+      </section>
 
-          {/* --- Layout de Duas Colunas --- */}
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            
-            {/* Coluna da Esquerda: Informações de Contato */}
-            <div className="bg-gray-50 p-8 rounded-lg">
-              <h2 className="text-2xl font-semibold text-navy-dark mb-6">Nossos Canais</h2>
-              <div className="space-y-6">
-                <a href="tel:+553597499220" className="flex items-center gap-4 group">
-                  <Phone className="w-6 h-6 text-primary" />
+      <div className="container-custom -mt-24 pb-24 relative z-20">
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          
+          {/* --- Coluna de Informações (Esquerda) --- */}
+          <div className="lg:col-span-4 space-y-6">
+            <div className="bg-white p-10 rounded-[32px] shadow-xl border border-gray-100 space-y-10">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-navy-dark tracking-tight">Canais Diretos</h2>
+                <p className="text-sm text-gray-400">Atendimento consultivo e personalizado.</p>
+              </div>
+
+              <div className="space-y-8">
+                <a href="tel:+553597499220" className="flex items-center gap-5 group">
+                  <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                    <Phone className="w-5 h-5" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 group-hover:text-primary transition-colors">Telefone</h3>
-                    <p className="text-gray-600 group-hover:text-primary transition-colors">(35) 9749-9220</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Telefone Institucional</p>
+                    <p className="text-navy-dark font-semibold group-hover:text-primary transition-colors">(35) 9749-9220</p>
                   </div>
                 </a>
-                <a href="https://wa.me/553597499220" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
-                  <MessageSquare className="w-6 h-6 text-primary" />
+
+                <a href="https://wa.me/553597499220" target="_blank" rel="noopener noreferrer" className="flex items-center gap-5 group">
+                  <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all duration-500">
+                    <MessageSquare className="w-5 h-5" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 group-hover:text-primary transition-colors">WhatsApp</h3>
-                    <p className="text-gray-600 group-hover:text-primary transition-colors">Clique para iniciar uma conversa</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">WhatsApp Business</p>
+                    <p className="text-navy-dark font-semibold group-hover:text-green-600 transition-colors">Iniciar conversa digital</p>
                   </div>
                 </a>
-                <a href="mailto:gestao@bancometropolitan.com.br" className="flex items-center gap-4 group">
-                  <Mail className="w-6 h-6 text-primary" />
+
+                <a href="mailto:gestao@metropolitanscd.com.br" className="flex items-center gap-5 group">
+                  <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-navy-dark group-hover:text-white transition-all duration-500">
+                    <Mail className="w-5 h-5" />
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 group-hover:text-primary transition-colors">E-mail</h3>
-                    <p className="text-gray-600 group-hover:text-primary transition-colors">gestao@bancometropolitan.com.br</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">E-mail Corporativo</p>
+                    <p className="text-navy-dark font-semibold group-hover:text-primary transition-colors text-sm">gestao@metropolitanscd.com.br</p>
                   </div>
                 </a>
               </div>
-              <div className="mt-8 pt-6 border-t">
-                <h3 className="font-semibold text-gray-800">Horário de Atendimento</h3>
-                <p className="text-gray-600">Segunda a Sexta, das 08h às 18h.</p>
+
+              <div className="pt-8 border-t border-gray-100 space-y-4">
+                <div className="flex items-center gap-3 text-sm text-gray-500">
+                  <Clock className="w-4 h-4 text-primary" />
+                  <span>Seg a Sex: 08h às 18h</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-500">
+                  <ShieldCheck className="w-4 h-4 text-primary" />
+                  <span>Operação Auditada e Segura</span>
+                </div>
               </div>
             </div>
+          </div>
 
-            {/* Coluna da Direita: Formulário */}
-            <div className="p-8 border rounded-lg">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Label htmlFor="nome" className="font-semibold">Nome Completo</Label>
-                  <Input id="nome" type="text" placeholder="Seu nome completo" required onChange={handleChange} value={formData.nome} className="mt-2" />
-                </div>
-                <div>
-                  <Label htmlFor="email" className="font-semibold">E-mail</Label>
-                  <Input id="email" type="email" placeholder="seu@email.com" required onChange={handleChange} value={formData.email} className="mt-2" />
-                </div>
-                <div>
-                  <Label htmlFor="telefone" className="font-semibold">Telefone</Label>
-                  <Input id="telefone" type="tel" placeholder="(XX) XXXXX-XXXX" onChange={handleChange} value={formData.telefone} className="mt-2" />
-                </div>
-                <div>
-                  <Label htmlFor="assunto" className="font-semibold">Assunto</Label>
-                  <Select onValueChange={handleSelectChange} value={formData.assunto} required>
-                    <SelectTrigger id="assunto" className="w-full mt-2">
-                      <SelectValue placeholder="Selecione o motivo do contato" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="duvidas">Dúvidas Gerais</SelectItem>
-                      <SelectItem value="suporte">Suporte Técnico</SelectItem>
-                      <SelectItem value="parcerias">Proposta de Parceria</SelectItem>
-                      <SelectItem value="outros">Outros</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="mensagem" className="font-semibold">Sua Mensagem</Label>
-                  <Textarea id="mensagem" placeholder="Digite sua mensagem aqui..." required onChange={handleChange} value={formData.mensagem} className="mt-2" rows={5} />
-                </div>
-                <Button type="submit" className="w-full btn-primary">
-                  Enviar Mensagem
-                </Button>
-              </form>
+          {/* --- Coluna do Formulário (Direita) --- */}
+          <div className="lg:col-span-8">
+            <div className="bg-white p-8 md:p-16 rounded-[32px] shadow-xl border border-gray-100 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
               
+              <div className="relative z-10">
+                <div className="mb-10 space-y-2">
+                  <h2 className="text-3xl font-bold text-navy-dark tracking-tight">Envie uma mensagem</h2>
+                  <p className="text-gray-500 font-light">Preencha os campos abaixo e um de nossos especialistas entrará em contato.</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <Label htmlFor="nome" className="text-xs font-bold uppercase tracking-widest text-gray-400">Nome Completo</Label>
+                      <Input id="nome" required onChange={handleChange} value={formData.nome} className="border-0 border-b border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary transition-all text-lg" placeholder="Como devemos lhe chamar?" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-gray-400">E-mail Profissional</Label>
+                      <Input id="email" type="email" required onChange={handleChange} value={formData.email} className="border-0 border-b border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary transition-all text-lg" placeholder="exemplo@empresa.com" />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <Label htmlFor="telefone" className="text-xs font-bold uppercase tracking-widest text-gray-400">Telefone / WhatsApp</Label>
+                      <Input id="telefone" type="tel" onChange={handleChange} value={formData.telefone} className="border-0 border-b border-gray-200 rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary transition-all text-lg" placeholder="(00) 00000-0000" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="assunto" className="text-xs font-bold uppercase tracking-widest text-gray-400">Assunto</Label>
+                      <Select onValueChange={handleSelectChange} value={formData.assunto} required>
+                        <SelectTrigger className="border-0 border-b border-gray-200 rounded-none px-0 focus:ring-0 text-lg">
+                          <SelectValue placeholder="Selecione o motivo" />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-xl border-gray-100 shadow-2xl">
+                          <SelectItem value="duvidas">Dúvidas Estruturais</SelectItem>
+                          <SelectItem value="parcerias">Novas Parcerias</SelectItem>
+                          <SelectItem value="ouvidoria">Ouvidoria e Ética</SelectItem>
+                          <SelectItem value="outros">Outros Assuntos</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="mensagem" className="text-xs font-bold uppercase tracking-widest text-gray-400">Mensagem</Label>
+                    <Textarea id="mensagem" required onChange={handleChange} value={formData.mensagem} className="border-gray-100 rounded-2xl p-4 focus-visible:ring-primary focus-visible:border-primary min-h-[150px] bg-gray-50/50" placeholder="Descreva brevemente sua necessidade..." />
+                  </div>
+
+                  <div className="pt-4">
+                    <Button type="submit" className="w-full md:w-auto bg-navy-dark hover:bg-primary text-white px-12 py-8 rounded-full font-bold tracking-[0.2em] text-xs transition-all duration-500 shadow-xl">
+                      ENVIAR SOLICITAÇÃO <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
