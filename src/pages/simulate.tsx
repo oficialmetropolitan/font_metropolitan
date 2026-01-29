@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 // FIM NOVOS IMPORTS
 import { toast } from "sonner";
 import api from "@/services/http/axios";
-import { ArrowRight, Loader2, RefreshCcw, UserPlus } from "lucide-react";
+import { ArrowRight, Landmark, Loader2, RefreshCcw, UserPlus } from "lucide-react";
 import Header from '@/components/Header';
 import InputMask from 'react-input-mask';
 import CurrencyInput from 'react-currency-input-field'
@@ -31,8 +31,10 @@ type StepSectionProps = {
 };
 
 interface SimulacaoFormData {
+  
   valor_desejado: number;
   prazo_meses: string;
+  especificacao_motivo?: string;
   motivo_emprestimo: string;
   full_name: string;
   email: string;
@@ -41,6 +43,31 @@ interface SimulacaoFormData {
   cidade: string;
   estado: string;
   possui_garantia?: string;
+  valor_imovel?: number;
+  imovel_cep?: string;
+  imovel_numero?: string;
+  imovel_tipo?: string;
+  imovel_esta_pagando?: string;
+  imovel_matricula?: string;
+  imovel_proprietario?: string;
+  veiculo_marca?: string;
+  veiculo_modelo?: string;
+  veiculo_ano?: string;
+  veiculo_valor_fipe?: number;
+  veiculo_proprietario?: string;
+  veiculo_placa?: string;
+  descricao_outra_garantia?: string;
+  fin_veiculo_modelo?: string;
+  fin_veiculo_ano?: string;
+  fin_preferencia_garantia?: string;
+  consignado_empresa?: string;
+  consignado_salario_bruto?: number;
+  consignado_regime_clt?: boolean;
+  faturamento_maquininha?: number;
+  operadora_maquininha?: string;
+  cnpj?: string;
+  faturamento_cartao_mensal?: number;
+  
 }
 
 interface SimulacaoResultado {
@@ -49,11 +76,7 @@ interface SimulacaoResultado {
   juros_total: number;
 }
 
-interface SimulacaoResultado {
-  valor_parcela: number;
-  valor_total: number;
-  juros_total: number;
-}
+
 type BigCurrencyFieldProps = {
   control: Control<SimulacaoFormData>; // Mudança aqui para bater com o formulário
   name: keyof SimulacaoFormData;
@@ -62,35 +85,37 @@ type BigCurrencyFieldProps = {
 };
 
 const StepSection = ({ step, title, children }: StepSectionProps) => (
-  <section className="space-y-6">
-    <div className="flex items-center gap-3">
-      <div className="h-8 w-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
+ <section className="space-y-8 animate-in fade-in duration-700">
+    <div className="flex items-center gap-4 border-b border-gray-100 pb-4">
+      <div className="h-10 w-10 rounded-2xl bg-navy-dark text-white flex items-center justify-center font-bold shadow-lg shadow-navy-dark/20">
         {step}
       </div>
-      <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
+      <h2 className="text-2xl font-extrabold text-navy-dark tracking-tight">{title}</h2>
     </div>
-    <div className="space-y-6 pl-11">{children}</div>
+    <div className="grid gap-6">{children}</div>
   </section>
 );
 
-const BigCurrencyField = ({ control, name, label, helperText }: BigCurrencyFieldProps) => (
+const BigCurrencyField = ({ control, name, label }: BigCurrencyFieldProps) => (
   <FormField
     control={control}
     name={name}
     render={({ field }) => (
-      <FormItem className="space-y-2">
-        <FormLabel className="text-base font-medium">{label}</FormLabel>
+      <FormItem className="space-y-4">
+        <FormLabel className="text-xs font-bold uppercase tracking-[0.2em] text-gray-600">{label}</FormLabel>
         <FormControl>
-          <CurrencyInput
-            value={field.value}
-            onValueChange={(value) => field.onChange(value ? parseFloat(value) : 0)}
-            intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
-            customInput={Input}
-            className="text-4xl font-semibold border-0 border-b border-slate-300 rounded-none focus-visible:ring-0 focus-visible:border-blue-600 px-0"
-            placeholder="R$ 0"
-          />
+          <div className="relative group">
+            <CurrencyInput
+
+              value={typeof field.value === 'number' || typeof field.value === 'string' ? field.value : ""} 
+              onValueChange={(value) => field.onChange(value ? parseFloat(value) : 0)}
+              intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
+              customInput={Input}
+              className="text-5xl md:text-5xl font-black border-0 border-b-2 border-gray-400 rounded-none focus-visible:ring-0 focus-visible:border-primary px-0 py-8 bg-transparent transition-all placeholder:text-gray-600"
+              placeholder="R$ 0"
+            />
+          </div>
         </FormControl>
-        {helperText && <p className="text-sm text-muted-foreground">{helperText}</p>}
         <FormMessage />
       </FormItem>
     )}
@@ -98,18 +123,21 @@ const BigCurrencyField = ({ control, name, label, helperText }: BigCurrencyField
 );
 const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
 
-  <div className="space-y-4">
-    <h3 className="text-lg font-semibold">Sobre seu Imóvel</h3>
+  <div className="space-y-6 bg-gray-50/50 p-6 rounded-[32px] border border-gray-100">
+    <div className="flex items-center gap-2 mb-2">
+      <Landmark className="h-5 w-5 text-primary" />
+    <h3 className="text-lg font-bold text-navy-dark uppercase tracking-tighter">Sobre seu Imóvel</h3>
     <p className="text-sm text-muted-foreground">
       Perguntas sobre o imóvel que será usado como garantia.
     </p>
+    </div>
 
     <FormField
       control={control}
       name="valor_imovel"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Valor aproximado do Imóvel</FormLabel>
+          <FormLabel  className="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor aproximado do Imóvel</FormLabel>
           <FormControl>
             {/* Usamos o CurrencyInput como o controlador */}
             <CurrencyInput
@@ -134,6 +162,8 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
                 const numericValue = value ? parseFloat(value) : undefined;
                 field.onChange(numericValue);
               }}
+              className="h-12 rounded-2xl border-gray-400 bg-white"
+
             />
           </FormControl>
           <FormMessage />
@@ -147,8 +177,8 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
         name="imovel_cep"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>CEP do Imóvel</FormLabel>
-            <FormControl>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">CEP do Imóvel</FormLabel>
+            <FormControl className=" rounded-2xl border-gray-400 bg-white">
               <InputMask
                 mask="99999-999"
                 value={field.value}
@@ -164,6 +194,7 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
                     placeholder="00000-000"
                   />
                 )}
+                
               </InputMask>
             </FormControl>
             <FormMessage />
@@ -175,8 +206,8 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
         name="imovel_numero"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Número</FormLabel>
-            <FormControl><Input placeholder="123" {...field} /></FormControl>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Número</FormLabel>
+            <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" placeholder="123" {...field} /></FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -188,9 +219,9 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
       name="imovel_tipo"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Tipo do Imóvel</FormLabel>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Tipo do Imóvel</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl><SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl>
+            <FormControl className=" rounded-2xl border-gray-400 bg-white" ><SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl>
             <SelectContent>
               <SelectItem value="casa">Casa</SelectItem>
               <SelectItem value="apartamento">Apartamento</SelectItem>
@@ -208,7 +239,7 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
       name="imovel_esta_pagando"
       render={({ field }) => (
         <FormItem className="space-y-3">
-          <FormLabel>Está pagando financiamento deste imóvel?</FormLabel>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Está pagando financiamento deste imóvel?</FormLabel>
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
@@ -217,11 +248,11 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
             >
               <FormItem className="flex items-center space-x-2">
                 <FormControl><RadioGroupItem value="sim" /></FormControl>
-                <FormLabel className="font-normal">Sim</FormLabel>
+                <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Sim</FormLabel>
               </FormItem>
               <FormItem className="flex items-center space-x-2">
                 <FormControl><RadioGroupItem value="nao" /></FormControl>
-                <FormLabel className="font-normal">Não</FormLabel>
+                <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Não</FormLabel>
               </FormItem>
             </RadioGroup>
           </FormControl>
@@ -235,8 +266,8 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
       name="imovel_matricula"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Matrícula do Imóvel</FormLabel>
-          <FormControl><Input placeholder="Nº da matrícula (opcional)" {...field} /></FormControl>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Matrícula do Imóvel</FormLabel>
+          <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" placeholder="Nº da matrícula (opcional)" {...field} /></FormControl>
           <FormMessage />
         </FormItem>
       )}
@@ -247,8 +278,8 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
       name="imovel_proprietario"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Imóvel no nome de quem?</FormLabel>
-          <FormControl><Input placeholder="Ex: Meu e Cônjuge" {...field} /></FormControl>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Imóvel no nome de quem?</FormLabel>
+          <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" placeholder="Ex: Meu e Cônjuge" {...field} /></FormControl>
           <FormMessage />
         </FormItem>
       )}
@@ -270,8 +301,8 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
         name="veiculo_marca"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Marca</FormLabel>
-            <FormControl><Input placeholder="Ex: Toyota" {...field} /></FormControl>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Marca</FormLabel>
+            <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" placeholder="Ex: Toyota" {...field} /></FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -281,8 +312,8 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
         name="veiculo_modelo"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Modelo</FormLabel>
-            <FormControl><Input placeholder="Ex: Corolla" {...field} /></FormControl>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Modelo</FormLabel>
+            <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" placeholder="Ex: Corolla" {...field} /></FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -295,8 +326,8 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
         name="veiculo_ano"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Ano</FormLabel>
-            <FormControl><Input type="number" placeholder="2020" {...field} /></FormControl>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Ano</FormLabel>
+            <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" type="number" placeholder="2020" {...field} /></FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -306,7 +337,7 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
         name="veiculo_valor_fipe"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Valor Aprox. (FIPE)</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor Aprox. (FIPE)</FormLabel>
             <FormControl>
               {/* Usamos o CurrencyInput como o controlador */}
               <CurrencyInput
@@ -317,20 +348,18 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
                 onBlur={field.onBlur}
                 ref={field.ref}
                 decimalsLimit={2}
-                // Configura para o formato Brasileiro (Real)
                 intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
 
-                // Aqui está a mágica da integração:
                 // 1. Dizemos para ele USAR o seu componente <Input>
                 customInput={Input}
 
                 // 2. Usamos onValueChange para atualizar o react-hook-form
                 onValueChange={(value, name) => {
-                  // 'value' aqui é uma string (ex: "300000.00") ou undefined.
-                  // Convertemos para número antes de salvar no form.
+                  
                   const numericValue = value ? parseFloat(value) : undefined;
                   field.onChange(numericValue);
                 }}
+                className=" rounded-2xl border-gray-400 bg-white"
               />
             </FormControl>
             <FormMessage />
@@ -344,8 +373,8 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
       name="veiculo_proprietario"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>O veículo está no nome de quem?</FormLabel>
-          <FormControl><Input placeholder="Ex: Meu nome" {...field} /></FormControl>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">O veículo está no nome de quem?</FormLabel>
+          <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" placeholder="Ex: Meu nome" {...field} /></FormControl>
           <FormMessage />
         </FormItem>
       )}
@@ -356,8 +385,8 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
       name="veiculo_placa"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Placa do Veículo</FormLabel>
-          <FormControl><Input placeholder="AAA-0A00" {...field} /></FormControl>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Placa do Veículo</FormLabel>
+          <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" placeholder="AAA-0A00" {...field} /></FormControl>
           <FormMessage />
         </FormItem>
       )}
@@ -376,7 +405,7 @@ const FinanciamentoVeicularQuestions = ({ control }: SpecificQuestionsProps) => 
         name="fin_veiculo_modelo"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Modelo Desejado</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Modelo Desejado</FormLabel>
             <FormControl><Input placeholder="Ex: Honda HR-V" {...field} /></FormControl>
             <FormMessage />
           </FormItem>
@@ -387,7 +416,7 @@ const FinanciamentoVeicularQuestions = ({ control }: SpecificQuestionsProps) => 
         name="fin_veiculo_ano"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Ano</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Ano</FormLabel>
             <FormControl><Input type="number" placeholder="2022" {...field} /></FormControl>
             <FormMessage />
           </FormItem>
@@ -399,7 +428,7 @@ const FinanciamentoVeicularQuestions = ({ control }: SpecificQuestionsProps) => 
       name="fin_preferencia_garantia"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Preferência de Garantia</FormLabel>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Preferência de Garantia</FormLabel>
           <FormControl><Input placeholder="Ex: O próprio veículo" {...field} /></FormControl>
           <FormMessage />
         </FormItem>
@@ -423,9 +452,9 @@ const ConsignadoQuestions = ({ control }: SpecificQuestionsProps) => (
       name="consignado_empresa"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Empresa / Convênio</FormLabel>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Empresa / Convênio</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl><SelectTrigger><SelectValue placeholder="Selecione sua empresa" /></SelectTrigger></FormControl>
+            <FormControl className=" rounded-2xl border-gray-400 bg-white" ><SelectTrigger><SelectValue placeholder="Selecione sua empresa" /></SelectTrigger></FormControl>
             <SelectContent>
               {CONSIGNADO_EMPRESAS.map(emp => (
                 <SelectItem key={emp} value={emp}>{emp}</SelectItem>
@@ -437,12 +466,13 @@ const ConsignadoQuestions = ({ control }: SpecificQuestionsProps) => (
       )}
     />
     <FormField
+    
       control={control}
       name="consignado_salario_bruto"
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>Salário Bruto</FormLabel>
-          <FormControl><Input type="number" placeholder="R$ 3.500" {...field} /></FormControl>
+        <FormItem >
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Salário Bruto</FormLabel>
+          <FormControl><Input className=" rounded-2xl border-gray-400 bg-white" type="number" placeholder="R$ 3.500" {...field} /></FormControl>
           <FormMessage />
         </FormItem>
       )}
@@ -451,11 +481,11 @@ const ConsignadoQuestions = ({ control }: SpecificQuestionsProps) => (
       control={control}
       name="consignado_regime_clt"
       render={({ field }) => (
-        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+        <FormItem className=" border-gray-400 flex flex-row items-center justify-between rounded-lg border p-2 shadow-sm ">
           <div className="space-y-0.5">
             <FormLabel>Regime CLT?</FormLabel>
           </div>
-          <FormControl>
+          <FormControl >
             <Checkbox
               checked={field.value}
               onCheckedChange={field.onChange}
@@ -477,7 +507,7 @@ const PessoalQuestions = ({ control }: SpecificQuestionsProps) => {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Garantia Disponível</h3>
+        <h3 className="text-x5 font-bold uppercase tracking-widest text-gray-700">Garantia Disponível</h3>
         <p className="text-sm text-muted-foreground">
           Você possui algum bem para oferecer como garantia e conseguir taxas menores?
         </p>
@@ -488,7 +518,7 @@ const PessoalQuestions = ({ control }: SpecificQuestionsProps) => {
           render={({ field }) => (
             <FormItem>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
+                <FormControl className="  border-gray-400  focus:bg-white bg-gray-50/50">
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione uma opção" />
                   </SelectTrigger>
@@ -528,9 +558,9 @@ const PessoalQuestions = ({ control }: SpecificQuestionsProps) => {
             name="descricao_outra_garantia"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Qual bem você pode oferecer como garantia?</FormLabel>
+                <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Qual bem você pode oferecer como garantia?</FormLabel>
                 <FormControl>
-                  <Input
+                  <Input className=" rounded-2xl border-gray-400 bg-white"
                     placeholder="Ex: terreno, máquinas, equipamentos, etc."
                     {...field}
                   />
@@ -554,13 +584,14 @@ const RecebiveisQuestions = ({ control }: SpecificQuestionsProps) => (
         name="faturamento_maquininha"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Faturamento médio em Maquininha (mensal)</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Faturamento médio em Maquininha (mensal)</FormLabel>
             <FormControl>
               <CurrencyInput
                 intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
                 customInput={Input}
                 onValueChange={(val) => field.onChange(val)}
                 placeholder="R$ 0,00"
+                className=" rounded-2xl border-gray-400 bg-white"
               />
             </FormControl>
             <FormMessage />
@@ -572,9 +603,9 @@ const RecebiveisQuestions = ({ control }: SpecificQuestionsProps) => (
         name="operadora_maquininha"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Qual a sua Maquininha?</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Qual a sua Maquininha?</FormLabel>
             <Select onValueChange={field.onChange}>
-              <FormControl>
+              <FormControl className=" rounded-2xl border-gray-400 bg-white">
                 <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
               </FormControl>
               <SelectContent>
@@ -595,8 +626,8 @@ const RecebiveisQuestions = ({ control }: SpecificQuestionsProps) => (
         name="cnpj" // Nome do campo no formulário
         render={({ field }) => (
           <FormItem>
-            <FormLabel>CNPJ</FormLabel>
-            <FormControl>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">CNPJ</FormLabel>
+            <FormControl className=" rounded-2xl border-gray-400 bg-white">
               
               <InputMask
                 mask="99.999.999/9999-99"
@@ -613,6 +644,7 @@ const RecebiveisQuestions = ({ control }: SpecificQuestionsProps) => (
                     ref={field.ref} // Importante para o react-hook-form
                   />
                 )}
+                
               </InputMask>
             </FormControl>
             <FormMessage />
@@ -632,12 +664,12 @@ const TravaMaquininhaQuestions = ({ control }: SpecificQuestionsProps) => (
     </div>
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <FormField
+      <FormField 
         control={control}
         name="faturamento_cartao_mensal"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Vendas médias no cartão (Mensal)</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Vendas médias no cartão (Mensal)</FormLabel>
             <FormControl>
               <CurrencyInput
                 intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
@@ -645,6 +677,7 @@ const TravaMaquininhaQuestions = ({ control }: SpecificQuestionsProps) => (
                 onValueChange={(val) => field.onChange(val)}
                 placeholder="R$ 0,00"
                 value={field.value}
+                className=" rounded-2xl border-gray-400 bg-white"
               />
             </FormControl>
             <FormMessage />
@@ -658,9 +691,9 @@ const TravaMaquininhaQuestions = ({ control }: SpecificQuestionsProps) => (
         name="adquirente_principal"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Qual sua operadora principal?</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Qual sua operadora principal?</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
+              <FormControl className=" rounded-2xl border-gray-400 bg-white">
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione a marca" />
                 </SelectTrigger>
@@ -686,12 +719,13 @@ const TravaMaquininhaQuestions = ({ control }: SpecificQuestionsProps) => (
       name="cnpj_empresa_trava"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>CNPJ vinculado à maquininha</FormLabel>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">CNPJ vinculado à maquininha</FormLabel>
           <FormControl>
             <InputMask
               mask="99.999.999/9999-99"
               value={field.value}
               onChange={field.onChange}
+              className=" rounded-2xl border-gray-400 bg-white"
             >
               {(inputProps) => (
                 // Aqui usamos o componente <Input> do shadcn
@@ -719,19 +753,16 @@ const CapitalGiroQuestions = ({ control }: SpecificQuestionsProps) => (
         name="cnpj" // Nome do campo no formulário
         render={({ field }) => (
           <FormItem>
-            <FormLabel>CNPJ</FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">CNPJ</FormLabel>
             <FormControl>
-              {/* Nota: A integração do react-input-mask é um pouco 
-                diferente do react-currency-input. 
-                Ele usa o padrão "children as a function" 
-                para passar as props para o seu componente <Input> 
-              */}
+             
               <InputMask
+              className=" rounded-2xl border-gray-400 bg-white"
                 mask="99.999.999/9999-99"
-                maskChar={null} // Não mostra os underscores '_'
+                maskChar={null} 
                 value={field.value}
-                onChange={field.onChange} // Passa o evento de mudança
-                onBlur={field.onBlur}     // Passa o evento de blur
+                onChange={field.onChange} 
+                onBlur={field.onBlur}     
               >
                 {(inputProps) => (
                   // Aqui usamos o componente <Input> do shadcn
@@ -752,10 +783,11 @@ const CapitalGiroQuestions = ({ control }: SpecificQuestionsProps) => (
         name="faturamento_mensal_da_empresa"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Faturamento mensal da empresa </FormLabel>
+            <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Faturamento mensal da empresa </FormLabel>
             <FormControl>
               {/* Usamos o CurrencyInput como o controlador */}
               <CurrencyInput
+              className=" rounded-2xl border-gray-400 bg-white"
                 id="faturamento_mensal_da_empresa" // Bom para acessibilidade
                 name={field.name}
                 placeholder="R$ 80.000,00"
@@ -763,17 +795,10 @@ const CapitalGiroQuestions = ({ control }: SpecificQuestionsProps) => (
                 onBlur={field.onBlur}
                 ref={field.ref}
                 decimalsLimit={2}
-                // Configura para o formato Brasileiro (Real)
                 intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
-
-                // Aqui está a mágica da integração:
-                // 1. Dizemos para ele USAR o seu componente <Input>
                 customInput={Input}
-
-                // 2. Usamos onValueChange para atualizar o react-hook-form
                 onValueChange={(value, name) => {
-                  // 'value' aqui é uma string (ex: "300000.00") ou undefined.
-                  // Convertemos para número antes de salvar no form.
+                 
                   const numericValue = value ? parseFloat(value) : undefined;
                   field.onChange(numericValue);
                 }}
@@ -801,7 +826,7 @@ const renderSpecificQuestions = (tipo: string, control: Control<FieldValues>) =>
       return <PessoalQuestions control={control} />;
     case 'adiantamento-recebiveis':
       return <RecebiveisQuestions control={control} />;
-    case 'trava-maquininha':
+    case 'trava-de-maquininha':
       return <TravaMaquininhaQuestions control={control} />;
 
     case 'capital-de-giro':
@@ -833,7 +858,8 @@ const SimulacaoPage = () => {
       data_nascimento: "",
       cidade: "",
       estado: "",
-      possui_garantia: "nenhum"
+      possui_garantia: "nenhum",
+      especificacao_motivo: "",
     }
   });
 
@@ -880,38 +906,96 @@ const SimulacaoPage = () => {
 const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' | 'login') => {
     setIsLoading(true);
     try {
+      // Tenta recuperar o token para saber se o usuário já está logado
+      const token = localStorage.getItem("token");
+
       const payload = {
         ...data,
         valor_desejado: Number(data.valor_desejado),
         prazo_meses: Number(data.prazo_meses),
         tipo_emprestimo: tipoEfetivo,
         dados_entrada: data,
-        resultado_simulacao: resultado 
+        resultado_simulacao: resultado,
+        // Informação crucial para o backend vincular ao User model
+        user_email: data.email 
       };
 
-      await api.post("/api/simulacoes/salvar-lead", payload);
-      toast.success("Dados registrados na Metropolitan!");
+      await api.post("/api/simulacoes/salvar-lead", payload, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+      toast.success("Simulação salva com sucesso!");
 
       if (destino === 'whatsapp') {
-          const msg = `Olá! Meu nome é *${data.full_name}*.
-          *Dados Pessoais:*
-            *Nascimento:* ${new Date(data.data_nascimento).toLocaleDateString('pt-BR')}
-            *Cidade/UF:* ${data.cidade} - ${data.estado}
-            *E-mail:* ${data.email}
-            *Numero de Telefone:* ${data.phone}
 
-          *Detalhes da Simulação:*
-            *Valor Solicitado:* R$ ${data.valor_desejado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-            *Produto:* ${tipoEfetivo.toUpperCase()}
-            *Prazo:* ${data.prazo_meses}x de *R$ ${resultado?.valor_parcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}*
-            *Total Estimado:* R$ ${resultado?.valor_total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                let msg = `Olá! Meu nome é *${data.full_name}*.\n`;
+              msg += `*Dados Pessoais:*\n`;
+              msg += `   • Nascimento: ${new Date(data.data_nascimento).toLocaleDateString('pt-BR')}\n`;
+              msg += `   • Local: ${data.cidade} - ${data.estado}\n`;
+              msg += `   • Contato: ${data.phone}\n`;
+              msg += `   • E-mail: ${data.email}\n\n`;
 
-          Tenho interesse em dar prosseguimento ao meu crédito!`.trim();
+              msg += `*Resumo da Simulação:*\n`;
+              msg += `   • Motivo: ${motivoSelecionado === 'outro' ? data.especificacao_motivo : motivoSelecionado}\n`;
+              msg += `   • Produto: ${tipoEfetivo.toUpperCase()}\n`;
+              msg += `   • Valor: R$ ${data.valor_desejado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+              msg += `   • Prazo: ${data.prazo_meses}x de *R$ ${resultado?.valor_parcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}*\n\n`;
 
-          window.open(`https://wa.me/5535988284302?text=${encodeURIComponent(msg)}`, '_blank');
+              switch (tipoEfetivo) {
+                case 'imovel-garantia':
+                  msg += `*Dados do Imóvel:*\n`;
+                  msg += `   • Tipo: ${data.imovel_tipo || 'N/A'}\n`;
+                  msg += `   • Está pagando financiamento?: ${data.imovel_esta_pagando === 'sim' ? 'Sim' : 'Não'}\n`;
+                  msg += '   • valor da imovel ' + data.valor_imovel + '\n';
+                  msg += `   • Matrícula: ${data.imovel_matricula || 'N/A'}\n`;
+                  msg += `   • Proprietário: ${data.imovel_proprietario || 'N/A'}\n\n`;
+                
+                  break;
+
+                case 'veiculo-garantia':
+                  msg += `*Dados do Veículo:*\n`;
+                  msg += `   • Ano: ${data.veiculo_ano || 'N/A'}\n`;
+                  msg += `   • Valor FIPE: R$ ${Number(data.veiculo_valor_fipe).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+                  msg += `   • Proprietário: ${data.veiculo_proprietario || 'N/A'}\n`;
+                  msg += `   • Modelo: ${data.veiculo_marca} ${data.veiculo_modelo}\n`;
+                  msg += `   • Placa: ${data.veiculo_placa || 'N/A'}\n\n`;
+                  break;
+
+                case 'credito-consignado':
+                  msg += `*Dados Profissionais:*\n`;
+                  msg += `   • Empresa: ${data.consignado_empresa}\n`;
+                  msg += `   • Salário Bruto: R$ ${Number(data.consignado_salario_bruto).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+                  msg += `   • Regime: ${data.consignado_regime_clt ? 'CLT' : 'Outro'}\n\n`;
+                  break;
+                
+                case 'capital-de-giro':
+                  msg += `*Dados Empresariais:*\n`;
+                  msg += `   • CNPJ: ${data.cnpj || 'Informado no formulário'}\n\n`;
+                  break;
+                case 'adiantamento-recebiveis':
+                case 'trava-maquininha':
+                  msg += `*Dados da Maquininha:*\n`;
+                  msg += `   • Faturamento Mensal: R$ ${Number(data.faturamento_maquininha).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+                  msg += `   • Operadora Principal: ${data.operadora_maquininha}\n`;
+                  msg += `   • CNPJ Vinculado: ${data.cnpj|| 'N/A'}\n\n`;
+                  break;
+              }
+
+              msg += `Tenho interesse em dar prosseguimento ao meu crédito!`;
+
+              window.open(`https://wa.me/5535988284302?text=${encodeURIComponent(msg.trim())}`, '_blank');
+
+    
       } else {
        
-        navigate('/login', { state: { email: data.email, nome: data.full_name } });
+        // Exemplo do que deve estar no seu navigate da SimulacaoPage
+navigate('/login', { 
+  state: { 
+    full_name: data.full_name, 
+    email: data.email, 
+    phone: data.phone, 
+
+  } 
+});
       }
     } catch (error) {
       console.error("Erro no salvamento:", (error as AxiosError).response?.data);
@@ -924,7 +1008,7 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
   return (
     <>
       <Header />
-      <div className="max-w-2xl mx-auto py-12 px-4">
+      <div className="container max-w-4xl mx-auto py-12 md:py-24 px-4">
       {resultado && (
           <Card className="mb-8 border-2 border-blue-500 bg-white shadow-lg animate-in zoom-in-95 duration-500">
             <CardContent className="pt-6">
@@ -981,8 +1065,13 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Quase lá! Deseja prosseguir?</CardTitle>
-            <CardDescription>Configurando simulação para {tipoEfetivo}</CardDescription>
+              <CardTitle className="text-3xl md:text-5xl font-black text-[#0062FF] tracking-tighter leading-none">
+                        Estruture seu 
+                        <span className="text-gray-400 font-light italic text-4xl ml-3 ">Planejamento. {tipoEfetivo}</span>
+                        
+                    </CardTitle>
+
+           
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -991,45 +1080,76 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
                 {!showLeadForm ? (
                   <>
                     {/* PASSO 1: DADOS FINANCEIROS */}
-                    <StepSection step={1} title="Dados do Empréstimo">
-                      <BigCurrencyField control={form.control} name="valor_desejado" label="Quanto você precisa?" />
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField control={form.control} name="prazo_meses" render={({ field }) => (
-                          <FormItem><FormLabel>Prazo (meses)</FormLabel><Input type="number" {...field} /></FormItem>
-                        )} />
-                        <FormField control={form.control} name="motivo_emprestimo" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Motivo do crédito</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl><SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl>
-                              <SelectContent>
-                                <SelectItem value="quitar_dividas">Quitar Dívidas</SelectItem>
-                                <SelectItem value="investimento">Investimento</SelectItem>
-                                <SelectItem value="reforma">Reforma</SelectItem>
-                                <SelectItem value="compra_bem">Compra de Bem</SelectItem>
-                                <SelectItem value="viagem">Viagem</SelectItem>
-                                <SelectItem value="outro">Outro</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </FormItem>
-                        )} />
-                        {motivoSelecionado === "outro" && (
-                            <FormField control={form.control} name="motivo_emprestimo" render={({ field }) => (
-                              <FormItem className="animate-in fade-in slide-in-from-top-2">
-                                <FormLabel>Especifique o motivo</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Descreva aqui..." {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )} />
-  )}
-                      </div>
-                    </StepSection>
+     <StepSection step={1} title="Dados do Empréstimo">
+  <BigCurrencyField control={form.control} name="valor_desejado" label="Quanto você precisa?" />
+  
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <FormField
+      control={form.control}
+      name="prazo_meses"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
+            Prazo (meses)
+          </FormLabel>
+          <Input className="border-gray-400 focus:bg-white bg-gray-50/50" type="number" {...field} />
+        </FormItem>
+      )}
+    />
 
-                   
+    <FormField
+      control={form.control}
+      name="motivo_emprestimo"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
+            Motivo do crédito
+          </FormLabel>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl className="border-gray-400 focus:bg-white bg-gray-50/50">
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione" />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent className="rounded-2xl border-none shadow-2xl">
+              <SelectItem value="quitar_dividas">Quitar Dívidas</SelectItem>
+              <SelectItem value="investimento">Investimento</SelectItem>
+              <SelectItem value="reforma">Reforma</SelectItem>
+              <SelectItem value="compra_bem">Compra de Bem</SelectItem>
+              <SelectItem value="viagem">Viagem</SelectItem>
+              <SelectItem value="outro">Outro</SelectItem>
+            </SelectContent>
+          </Select>
+        </FormItem>
+      )}
+    />
+
+
+    {motivoSelecionado === "outro" && (
+      <FormField
+        control={form.control}
+        name="especificacao_motivo" // Nome alterado aqui
+        render={({ field }) => (
+          <FormItem className="animate-in fade-in slide-in-from-top-2 md:col-span-2">
+            <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
+              Especifique o motivo
+            </FormLabel>
+            <FormControl>
+              <Input 
+                className="border-gray-400 focus:bg-white bg-gray-50/50" 
+                placeholder="Descreva aqui..." 
+                {...field} 
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    )}
+  </div>
+</StepSection>   
                     <StepSection step={2} title="Detalhes Adicionais">
-                      {renderSpecificQuestions(tipoEfetivo, form.control as any)}
+                      {renderSpecificQuestions(tipoEfetivo, form.control as unknown as Control<FieldValues>)}
                     </StepSection>
                   </>
                 ) : (
@@ -1048,7 +1168,7 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
                             <FormLabel>WhatsApp</FormLabel>
                             <FormControl>
                               <InputMask mask="(99) 99999-9999" value={field.value} onChange={field.onChange}>
-                                {(inputProps: any) => <Input {...inputProps} type="tel" placeholder="(00) 00000-0000" />}
+                                {(inputProps) => <Input {...inputProps} type="tel" placeholder="(00) 00000-0000" />}
                               </InputMask>
                             </FormControl>
                           </FormItem>

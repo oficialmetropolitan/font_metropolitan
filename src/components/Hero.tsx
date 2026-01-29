@@ -24,13 +24,9 @@ const Hero = () => {
             </div>
             
             <div className="space-y-4">
-              <p className="text-lg text-gray-600 max-w-lg">
-                Use o seu imóvel ou veiculo e tenha acesso ao crédito mais rápido, 
-                com o nosso processo simplificado e 100% online.
-              </p>
+             
               
-
-              <p className="text-xs text-gray-500 max-w-md leading-relaxed">
+              <p className="text-xs text-gray-700 max-w-md leading-relaxed">
                 A <strong>Metropolitan</strong> atua como securitizadora de ativos, facilitando o acesso ao crédito em parceria com instituições financeiras autorizadas, garantindo segurança e agilidade na sua operação.
               </p>
             </div>

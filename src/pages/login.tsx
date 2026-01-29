@@ -52,14 +52,13 @@ const Login = () => {
         console.warn("Nenhuma simulação pendente para vincular.");
       }
 
-      // Redirecionamento inteligente
       if (response.data.is_admin) {
         navigate("/admin/financeiro");
       } else {
-        navigate("/perfil"); // Vai para o perfil para ver a simulação salva
+        navigate("/perfil"); 
       }
 
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       setError("E-mail ou senha incorretos.");
     } finally {
@@ -123,7 +122,15 @@ const Login = () => {
                 {isLoading ? "Entrando..." : "Entrar"}
               </Button>
               <div className="flex flex-col items-center gap-2 text-sm">
-                <p className="text-muted-foreground">Não tem uma conta? <Link to="/cadastro" className="text-primary font-bold hover:underline">Criar conta</Link></p>
+                <p className="text-muted-foreground"> Não tem uma conta?{" "}
+                    <Link 
+                      to="/cadastro" 
+                      state={location.state} 
+                      className="text-primary font-bold hover:underline"
+                    >
+                      Criar conta
+                    </Link>
+                  </p>
                 <Link to="/esqueci-senha" className="text-gray-500 hover:underline">Esqueceu a senha?</Link>
               </div>
             </CardFooter>

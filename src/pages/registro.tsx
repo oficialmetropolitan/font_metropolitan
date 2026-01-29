@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,11 +8,15 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import axios from "axios";
 import { toast } from "sonner"; 
+import { useState, useEffect } from "react"; 
+import { Link, useNavigate, useLocation } from "react-router-dom"; 
+
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // Hook para pegar os dados da rota
 
   const [formData, setFormData] = useState({
     full_name: "", 
@@ -25,7 +28,21 @@ const Register = () => {
     acceptTerms: false
   });
 
-  // MELHORADO: Uma única função para lidar com as mudanças nos inputs
+
+  useEffect(() => {
+   
+    if (location.state) {
+      const { full_name, email, phone, cpf } = location.state;
+      
+      setFormData(prev => ({
+        ...prev,
+        full_name: full_name || prev.full_name,
+        email: email || prev.email,
+        phone: phone || prev.phone,
+        cpf: cpf || prev.cpf
+      }));
+    }
+  }, [location.state]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -50,7 +67,7 @@ const Register = () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
       
-      // Enviando os dados para o backend. Note que 'confirmPassword' e 'acceptTerms' não são enviados.
+    
       const response = await axios.post(`${apiUrl}/api/auth/clientes`, {
         full_name: formData.full_name,
         email: formData.email,
@@ -59,12 +76,10 @@ const Register = () => {
         password: formData.password,
       });
 
-      // MELHORADO: Usando toast para o feedback de sucesso
+      
       toast.success("Conta criada! Verifique seu e-mail para ativar.");
       console.log("Resposta do cadastro:", response.data.message);
 
-      // MUDANÇA PRINCIPAL: Redireciona para a página de verificação
-      // Passamos o e-mail do usuário na URL para a próxima página saber quem está verificando
       navigate(`/verificar-email?email=${formData.email}`);
 
     } catch (error) {

@@ -70,7 +70,7 @@ const MySimulationsPage = () => {
       },
     });
         setSimulations(Array.isArray(response.data) ? response.data : []);
-      } catch (err: any) {
+      } catch (err) {
         setError("Não foi possível carregar suas simulações.");
         console.error(err);
       } finally {

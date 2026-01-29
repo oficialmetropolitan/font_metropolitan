@@ -53,7 +53,6 @@ const ProductDetailPage = () => {
           
           <h1 className="text-5xl text-black md:text-6xl font-extrabold tracking-tighter max-w-4xl mx-auto leading-[1.1]">
             {product.title} <br />
-            <span className="text-gray-400 font-light italic">inteligente e digital.</span>
           </h1>
           
           <p className="mt-6 text-xl text-black max-w-2xl mx-auto font-dark leading-relaxed">
