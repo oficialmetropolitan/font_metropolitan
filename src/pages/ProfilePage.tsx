@@ -22,7 +22,7 @@ const OCCUPATIONS = ["Assalariado", "Autônomo", "Empresário", "Profissional Li
 
 // Schema de Validação (REMOVIDO OS CHECKBOXES PARA NÃO TRAVAR O ENVIO)
 const profileSchema = z.object({
- 
+  birthDate: z.string().min(1, "Data de nascimento obrigatória"),
   gender: z.string().min(1, "Gênero obrigatório"),
   education: z.string().min(1, "Grau de instrução obrigatório"),
   maritalStatus: z.string().min(1, "Estado civil obrigatório"),
@@ -36,7 +36,7 @@ const profileSchema = z.object({
   state: z.string().min(1, "Estado obrigatório"),
   occupation: z.string().min(1, "Ocupação obrigatória"),
   monthlyIncome: z.preprocess((val) => Number(val), z.number().min(0, "Renda mensal obrigatória")),
-  dataAdmissao: z.string().min(1, "Data de admissão obrigatória"),
+  dataAdmissao: z.string().optional(),
 });
 
 type ProfileForm = z.infer<typeof profileSchema>;
@@ -50,7 +50,7 @@ const ProfilePage = () => {
   const form = useForm<ProfileForm>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-  
+      birthDate: "",
       gender: "",
       education: "",
       maritalStatus: "",
@@ -85,7 +85,7 @@ const ProfilePage = () => {
 
         const profileData = response.data;
         reset({
-      
+          birthDate: profileData.data_nascimento || "",
           gender: profileData.genero || "",
           education: profileData.escolaridade || "",
           maritalStatus: profileData.estado_civil || "",
@@ -132,6 +132,7 @@ const ProfilePage = () => {
   const onSubmit = async (data: ProfileForm) => {
     setIsLoading(true);
     const profilePayload = {
+      data_nascimento: data.birthDate,
       genero: data.gender,
       escolaridade: data.education,
       estado_civil: data.maritalStatus,
@@ -145,8 +146,7 @@ const ProfilePage = () => {
       estado: data.state,
       profissao: data.occupation,
       renda_mensal: data.monthlyIncome,
-      data_admissao: data.dataAdmissao,
-  
+      // Como removemos do formulário, enviamos 'false' por padrão para não quebrar o banco
       possui_veiculo: false,
       possui_imovel: false,
       possui_restricao: false, 
@@ -187,7 +187,7 @@ const ProfilePage = () => {
                 <div>
                   <h3 className="text-lg font-semibold flex items-center gap-2 mb-4"><User className="h-5 w-5 text-primary"/> Dados Pessoais</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                
+                    <FormField control={form.control} name="birthDate" render={({ field }) => (<FormItem><FormLabel>Data de Nascimento *</FormLabel><FormControl><Input {...field} type="date" /></FormControl><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="gender" render={({ field }) => (<FormItem><FormLabel>Gênero *</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl><SelectContent><SelectItem value="masculino">Masculino</SelectItem><SelectItem value="feminino">Feminino</SelectItem><SelectItem value="outro">Outro</SelectItem></SelectContent></Select><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="education" render={({ field }) => (<FormItem><FormLabel>Grau de Instrução *</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl><SelectContent>{EDUCATION_LEVELS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="maritalStatus" render={({ field }) => (<FormItem><FormLabel>Estado Civil *</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl><SelectContent>{MARITAL_STATUS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
@@ -225,7 +225,7 @@ const ProfilePage = () => {
                   <div className="grid md:grid-cols-2 gap-4">
                     <FormField control={form.control} name="occupation" render={({ field }) => (<FormItem><FormLabel>Ocupação *</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl><SelectContent>{OCCUPATIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>)} />
                     <FormField control={form.control} name="monthlyIncome" render={({ field }) => (<FormItem><FormLabel>Renda Mensal (R$) *</FormLabel><FormControl><Input {...field} type="number" /></FormControl><FormMessage /></FormItem>)} />
-                    <FormField control={form.control} name="dataAdmissao" render={({ field }) => (<FormItem><FormLabel>Data de Admissão *</FormLabel><FormControl><Input {...field} type="date" /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField control={form.control} name="dataAdmissao" render={({ field }) => (<FormItem><FormLabel>Data de Admissão</FormLabel><FormControl><Input {...field} type="date" /></FormControl><FormMessage /></FormItem>)} />
                   </div>
                 </div>
 

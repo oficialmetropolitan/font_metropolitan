@@ -124,9 +124,7 @@ const DetalhesEspecificos = ({ sim, usuario }) => {
   );
 };
 
-/* =======================
-   DASHBOARD ADMIN
-======================= */
+
 const AdminDashboard = () => {
   const [solicitacoes, setSolicitacoes] = useState([]);
   const [usuarios, setUsuarios] = useState({});
@@ -135,7 +133,8 @@ const AdminDashboard = () => {
   const [taxaEdit, setTaxaEdit] = useState("");
   const [valoresAjustados, setValoresAjustados] = useState(null);
   const [isSavingAjuste, setIsSavingAjuste] = useState(false);
-
+  const [perfilData, setPerfilData] = useState(null);
+  
   const carregarUsuario = async (userId) => {
     if (usuarios[userId]) return;
 
