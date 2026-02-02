@@ -25,12 +25,12 @@ const ProductTabs = () => {
   };
 
   return (
-    <section className="py-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-white overflow-hidden" >
+    <section id="solucao" className="py-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-white overflow-hidden" >
       <div className="container-custom">
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           {/* Tabs Centralizadas e Minimalistas */}
-          <div className="flex justify-center mb-16">
+          <div className="flex justify-center mb-16" >
             <TabsList className="inline-flex h-14 items-center justify-center rounded-full bg-gray-100/80 p-1.5 backdrop-blur-md border border-gray-200 shadow-inner">
               <TabsTrigger 
                 value="para-voce"
@@ -83,7 +83,7 @@ const ProductTabs = () => {
               </div>
 
         
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 max-w-4xl mx-auto px-4"  id="solucao">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 max-w-4xl mx-auto px-4"  >
                 {section.products.map((product, index) => (
                   <motion.div 
                     key={product.id}

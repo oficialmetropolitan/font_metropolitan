@@ -1,21 +1,28 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Menu, X, AlertCircle, LogOut, Edit, Handshake } from "lucide-react"; // Adicionei o ícone 'Edit'
-import { useNavigate, Link } from "react-router-dom"; // Use Link para navegação interna
+import { ChevronDown, Menu, X, AlertCircle, LogOut, Edit, Handshake, ShieldCheck, User } from "lucide-react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { menuData } from "../lib/MenuData";
+import { HashLink } from 'react-router-hash-link';
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBannerVisible, setIsBannerVisible] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const checkAuth = () => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    }
-  }, []);
+    checkAuth();
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -23,163 +30,168 @@ const Header = () => {
     navigate("/login");
   };
 
-  const menuItems = [
-    {
-      label: "Para você",
-      items: ["Empréstimo pessoal", "Emprestimo consignado",]
-    },
-    {
-      label: "Para seu negócio", 
-      items: [
-    "Capital de Giro", 
-        "Financiamentos", "Operações Estruturadas", "Adiantamento de Recebíveis",
-        "Trava de Maquininha (garantia de recebíveis)"
-      ]
-    },
-  ];
-
   return (
     <>
-      {isBannerVisible && (
-        <div className="bg-navy-dark text-white py-3 px-4">
-          <div className="container-custom flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm">
-              <AlertCircle className="h-4 w-4" />
-              <span>A Metropolitan não solicita depósito ou pagamento antecipado para aprovação de crédito.</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <a href="/EviteGolpes" className="text-sm hover:text-gray-300 transition-colors border border-white/20 px-3 py-1 rounded">
-                Evite Golpes
-              </a>
-              <button 
-                className="text-white hover:text-gray-300"
-                onClick={() => setIsBannerVisible(false)}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <header className="bg-white shadow-sm border-b sticky top-0 z-50">
-        <div className="container-custom">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-x-6">
-              <div className="flex items-center">
-                <div className="text-2xl font-bold" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <img src="https://res.cloudinary.com/dtwruiuyw/image/upload/v1768401044/logoMetropolitan_k7jpw7.png" alt="Logo Metropolitan" className="h-10 w-auto"/>
-                  <a href="/"><span className="text-primary">Metropolitan</span></a>
-                  <span className="text-accent"></span>
+      <AnimatePresence>
+        {isBannerVisible && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="bg-navy-dark text-white overflow-hidden"
+          >
+            <div className="container-custom py-2 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/20 text-accent">
+                   <ShieldCheck className="h-3 w-3 text-white" />
                 </div>
+                <span className="text-[10px] md:text-xs font-medium tracking-wide text-gray-300">
+                  SEGURANÇA INSTITUCIONAL: A Metropolitan nunca solicita depósitos antecipados.
+                </span>
               </div>
-    <nav className="hidden lg:flex items-center space-x-8">
-                
-                {/* Aqui ele renderiza o menuData importado */}
+              <div className="flex items-center gap-4">
+                <Link to="/EviteGolpes" className="text-[10px] uppercase font-bold tracking-widest hover:text-white transition-colors border-b border-white/20 pb-0.5">
+                  Protocolo de Segurança
+                </Link>
+                <button onClick={() => setIsBannerVisible(false)} className="text-gray-400 hover:text-white">
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 transition-all duration-300">
+        <div className="container-custom">
+          <div className="flex items-center justify-between h-20">
+            
+            {/* Branding */}
+            <div className="flex items-center gap-10">
+              <Link to="/" className="flex items-center gap-3 group">
+                <div className="relative h-10 w-10 flex items-center justify-center  rounded-xl overflow-hidden shadow-lg group-hover:shadow-primary/20 transition-all duration-500">
+                  <img src="https://res.cloudinary.com/dtwruiuyw/image/upload/v1768401044/logoMetropolitan_k7jpw7.png" alt="Metropolitan Logo" className="h-7 w-auto relative z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-lg font-black text-navy-dark tracking-tighter leading-none uppercase">Metropolitan</span>
+                  <span className="text-[9px] font-bold text-gray-400 tracking-[0.3em] uppercase leading-none mt-1">Securitizadora</span>
+                </div>
+              </Link>
+
+              
+              <nav className="hidden lg:flex items-center space-x-1">
                 {menuData.map((item, index) => (
-                  <div key={index} className="relative group">
-                    <button className="flex items-center gap-1 text-gray-700 hover:text-primary transition-colors py-2">
+                  <div key={index} className="relative group px-2">
+                    <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-500 uppercase tracking-widest hover:text-navy-dark transition-all">
                       {item.label}
-                      <ChevronDown className="h-4 w-4 group-hover:rotate-180 transition-transform" />
+                      <ChevronDown className="h-3 w-3 group-hover:rotate-180 transition-transform duration-300" />
                     </button>
-                    <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                      <div className="p-4 space-y-3">
-                        
-                 
+                    
+                    {/* Dropdown Refinado */}
+                    <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 translate-y-2 group-hover:translate-y-0 overflow-hidden">
+                      <div className="p-2 space-y-0.5">
                         {item.items.map((subItem, subIndex) => (
                           <Link 
                             key={subIndex} 
                             to={subItem.href} 
-                            className="block text-sm text-gray-600 hover:text-primary transition-colors py-2 border-b border-gray-100 last:border-0"
+                            className="flex items-center justify-between group/item px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors"
                           >
-                            {subItem.label}
+                            <span className="text-sm font-medium text-gray-600 group-hover/item:text-navy-dark">{subItem.label}</span>
+                            <div className="h-1 w-1 rounded-full bg-primary opacity-0 group-hover/item:opacity-100 transition-all" />
                           </Link>
                         ))}
                       </div>
                     </div>
                   </div>
                 ))}
-                <a href="/sobreNos">Sobre Nós </a>
+                <Link to="/sobreNos" className="px-5 py-2 text-xs font-bold text-gray-500 uppercase tracking-widest hover:text-navy-dark transition-all">
+                  Sobre Nós
+                </Link>
               </nav>
             </div>
 
-            {/* --- Lógica condicional para os botões de ação --- */}
-            <div className="hidden lg:flex items-center gap-4">
-              {isAuthenticated ? (
-                <>
-                  <Button variant="outline" asChild>
-                    <Link to="/perfil/editar">
-                      <Edit className="h-4 w-4 mr-2" />
-                      Editar Perfil
-                    </Link>
-                  </Button>
-        
-                     <Button variant="outline" asChild>
-                    <Link to="/minhas-simulacoes">
-                    <Handshake className="h-4 w-4 mr-2" />
-                      Minhas Simulações
-                    </Link>
-                  </Button>
-                  <Button variant="outline" onClick={handleLogout}>
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Sair
-                  </Button>
-                </>
-              ) : (
-
-                <>
-                  <Button variant="outline" className="btn-secondary" asChild>
-                    <Link to="/login">Entrar</Link>
-                  </Button>
-                  <Button className="btn-primary" asChild>
-                    <Link to="#simulacao">Simular</Link>
-                  </Button>
-                </>
-              )}
-            </div>
-            
-            <button 
-              className="lg:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Lógica para o menu mobile */}
-        {isMenuOpen && (
-          <div className="lg:hidden bg-white border-t">
-            <div className="container-custom py-4 space-y-4">
-              {/* ... (código dos itens de menu mobile continua o mesmo) ... */}
-
-              <div className="pt-4 border-t space-y-3">
+            {/* Actions */}
+            <div className="flex items-center gap-4">
+              <div className="hidden lg:flex items-center gap-3">
                 {isAuthenticated ? (
-                  // Se estiver autenticado no mobile
-                  <>
-                    <Button variant="default" className="w-full" asChild>
-                      <Link to="/simulacao">Fazer Simulação</Link>
+                  <div className="flex items-center bg-gray-50 p-1 rounded-full border border-gray-100">
+                    <Button variant="ghost" size="sm" className="rounded-full text-[10px] font-bold tracking-widest uppercase  hover:bg-[#10161E]" asChild>
+                      <Link to="/perfil/editar">
+                        <Edit className="h-3 w-3 mr-2  text-blue-500 transition-colors duration-200 " />
+                          Perfil
+                      </Link>
                     </Button>
-                    <Button variant="outline" className="w-full" asChild>
-                      <Link to="/perfil/editar">Editar meu Perfil</Link>
+                    <Button variant="ghost" size="sm" className="rounded-full text-[10px] font-bold tracking-widest uppercase  hover:bg-[#10161E]" asChild>
+                      <Link to="/minhas-simulacoes">
+                        <Handshake className="h-3 w-3 mr-2  transition-colors duration-200 text-blue-500 " /> Minhas Simulações
+                      </Link>
                     </Button>
-                    <Button variant="ghost" className="w-full" onClick={handleLogout}>
-                      Sair da Conta
+                    <div className="w-[1px] h-4 bg-gray-200 mx-1" />
+                    <Button variant="ghost" size="sm" onClick={handleLogout} className="rounded-full text-[10px] font-bold tracking-widest uppercase hover:text-blue-100">
+                      <LogOut className="h-3 w-3" />
                     </Button>
-                  </>
+                  </div>
                 ) : (
-              
                   <>
-                     <Button variant="outline" className="w-full btn-secondary" asChild>
-                       <Link to="/login">Sou cliente</Link>
-                     </Button>
-      
+                    <Button variant="ghost" className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-navy-dark" asChild>
+                      <Link to="/login text-white">Área do Cliente</Link>
+                    </Button>
+                    <Button className="bg-navy-dark hover:bg-primary text-white px-8 rounded-full text-[10px] font-bold tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20" asChild>
+                      <HashLink smooth to="/#solucao">SOLUÇÕES</HashLink>
+                    </Button>
                   </>
                 )}
               </div>
+              
+              <button 
+                className="lg:hidden h-10 w-10 flex items-center justify-center rounded-xl bg-gray-50"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X className="h-5 w-5 text-navy-dark" /> : <Menu className="h-5 w-5 text-navy-dark" />}
+              </button>
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Mobile Menu Refined */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="lg:hidden absolute top-full left-0 w-full bg-white border-t border-gray-100 shadow-2xl p-6"
+            >
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 gap-4">
+                  {isAuthenticated ? (
+                    <>
+                      <Link to="/perfil/editar" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl">
+                         <div className="h-10 w-10 bg-white rounded-xl flex items-center justify-center shadow-sm"><User className="h-5 w-5 text-primary" /></div>
+                         <span className="font-bold text-navy-dark tracking-tight">Gerenciar Perfil</span>
+                      </Link>
+                      <Link to="/minhas-simulacoes" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl">
+                         <div className="h-10 w-10 bg-white rounded-xl flex items-center justify-center shadow-sm"><Handshake className="h-5 w-5 text-primary" /></div>
+                         <span className="font-bold text-navy-dark tracking-tight">Simulações Ativas</span>
+                      </Link>
+                      <Button onClick={handleLogout} variant="ghost" className="w-full text-red-500 font-bold uppercase tracking-widest text-[10px]">Encerrar Sessão</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button variant="outline" className="w-full h-14 rounded-2xl border-gray-100 font-bold text-navy-dark" asChild>
+                        <Link to="/login" onClick={() => setIsMenuOpen(false)}>Sou Cliente</Link>
+                      </Button>
+                      <Button className="w-full h-14 rounded-2xl bg-navy-dark font-bold text-white shadow-xl" asChild>
+                        <HashLink smooth to="/#solucao" onClick={() => setIsMenuOpen(false)}>Explorar Soluções</HashLink>
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
     </>
   );

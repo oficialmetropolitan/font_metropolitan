@@ -61,7 +61,7 @@ const PaginaContato = () => {
       <Header />
       
       {/* --- Header de Alto Padrão --- */}
-      <section className="bg-[#1a2a40] pt-24 pb-40 relative overflow-hidden">
+      <section className="bg-[#10161E] pt-24 pb-40 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
         <div className="container-custom relative z-10 text-center space-y-4">
           <span className="text-accent font-bold tracking-[0.4em] text-[10px] uppercase text-white ">Contact & Concierge</span>

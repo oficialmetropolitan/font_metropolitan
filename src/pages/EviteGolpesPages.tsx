@@ -78,7 +78,7 @@ export default function PaginaSeguranca() {
                 <AlertTriangle className="w-8 h-8 text-primary mt-1" />
                 <div>
                   <h3 className="font-semibold text-navy-dark">Cuidado com golpes</h3>
-                  <p className="text-gray-600">A Metropolitan nunca pede senhas ou códigos por e-mail, SMS ou WhatsApp.</p>
+                  <p className="text-gray-600">A Metropolitan nunca pede senhas por e-mail, SMS ou WhatsApp.</p>
                 </div>
               </CardContent>
             </Card>

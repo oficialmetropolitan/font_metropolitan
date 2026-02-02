@@ -31,7 +31,7 @@ type StepSectionProps = {
 };
 
 interface SimulacaoFormData {
-  
+
   valor_desejado: number;
   prazo_meses: string;
   especificacao_motivo?: string;
@@ -67,7 +67,7 @@ interface SimulacaoFormData {
   operadora_maquininha?: string;
   cnpj?: string;
   faturamento_cartao_mensal?: number;
-  
+
 }
 
 interface SimulacaoResultado {
@@ -85,7 +85,7 @@ type BigCurrencyFieldProps = {
 };
 
 const StepSection = ({ step, title, children }: StepSectionProps) => (
- <section className="space-y-8 animate-in fade-in duration-700">
+  <section className="space-y-8 animate-in fade-in duration-700">
     <div className="flex items-center gap-4 border-b border-gray-100 pb-4">
       <div className="h-10 w-10 rounded-2xl bg-navy-dark text-white flex items-center justify-center font-bold shadow-lg shadow-navy-dark/20">
         {step}
@@ -107,7 +107,7 @@ const BigCurrencyField = ({ control, name, label }: BigCurrencyFieldProps) => (
           <div className="relative group">
             <CurrencyInput
 
-              value={typeof field.value === 'number' || typeof field.value === 'string' ? field.value : ""} 
+              value={typeof field.value === 'number' || typeof field.value === 'string' ? field.value : ""}
               onValueChange={(value) => field.onChange(value ? parseFloat(value) : 0)}
               intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
               customInput={Input}
@@ -126,10 +126,10 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
   <div className="space-y-6 bg-gray-50/50 p-6 rounded-[32px] border border-gray-100">
     <div className="flex items-center gap-2 mb-2">
       <Landmark className="h-5 w-5 text-primary" />
-    <h3 className="text-lg font-bold text-navy-dark uppercase tracking-tighter">Sobre seu Imóvel</h3>
-    <p className="text-sm text-muted-foreground">
-      Perguntas sobre o imóvel que será usado como garantia.
-    </p>
+      <h3 className="text-lg font-bold text-navy-dark uppercase tracking-tighter">Sobre seu Imóvel</h3>
+      <p className="text-sm text-muted-foreground">
+        Perguntas sobre o imóvel que será usado como garantia.
+      </p>
     </div>
 
     <FormField
@@ -137,7 +137,7 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
       name="valor_imovel"
       render={({ field }) => (
         <FormItem>
-          <FormLabel  className="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor aproximado do Imóvel</FormLabel>
+          <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor aproximado do Imóvel</FormLabel>
           <FormControl>
             {/* Usamos o CurrencyInput como o controlador */}
             <CurrencyInput
@@ -194,7 +194,7 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
                     placeholder="00000-000"
                   />
                 )}
-                
+
               </InputMask>
             </FormControl>
             <FormMessage />
@@ -355,7 +355,7 @@ const CarEquityQuestions = ({ control }: SpecificQuestionsProps) => (
 
                 // 2. Usamos onValueChange para atualizar o react-hook-form
                 onValueChange={(value, name) => {
-                  
+
                   const numericValue = value ? parseFloat(value) : undefined;
                   field.onChange(numericValue);
                 }}
@@ -466,7 +466,7 @@ const ConsignadoQuestions = ({ control }: SpecificQuestionsProps) => (
       )}
     />
     <FormField
-    
+
       control={control}
       name="consignado_salario_bruto"
       render={({ field }) => (
@@ -621,30 +621,30 @@ const RecebiveisQuestions = ({ control }: SpecificQuestionsProps) => (
           </FormItem>
         )}
       />
-        <FormField
+      <FormField
         control={control}
         name="cnpj" // Nome do campo no formulário
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">CNPJ</FormLabel>
             <FormControl className=" rounded-2xl border-gray-400 bg-white">
-              
+
               <InputMask
                 mask="99.999.999/9999-99"
                 maskChar={null}
                 value={field.value}
-                onChange={field.onChange} 
-                onBlur={field.onBlur}     
+                onChange={field.onChange}
+                onBlur={field.onBlur}
               >
                 {(inputProps) => (
-                 
+
                   <Input
                     {...inputProps} // Espalha as props da máscara (value, onChange, etc.)
                     placeholder="00.000.000/0000-00"
                     ref={field.ref} // Importante para o react-hook-form
                   />
                 )}
-                
+
               </InputMask>
             </FormControl>
             <FormMessage />
@@ -664,7 +664,7 @@ const TravaMaquininhaQuestions = ({ control }: SpecificQuestionsProps) => (
     </div>
 
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <FormField 
+      <FormField
         control={control}
         name="faturamento_cartao_mensal"
         render={({ field }) => (
@@ -755,14 +755,14 @@ const CapitalGiroQuestions = ({ control }: SpecificQuestionsProps) => (
           <FormItem>
             <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">CNPJ</FormLabel>
             <FormControl>
-             
+
               <InputMask
-              className=" rounded-2xl border-gray-400 bg-white"
+                className=" rounded-2xl border-gray-400 bg-white"
                 mask="99.999.999/9999-99"
-                maskChar={null} 
+                maskChar={null}
                 value={field.value}
-                onChange={field.onChange} 
-                onBlur={field.onBlur}     
+                onChange={field.onChange}
+                onBlur={field.onBlur}
               >
                 {(inputProps) => (
                   // Aqui usamos o componente <Input> do shadcn
@@ -787,7 +787,7 @@ const CapitalGiroQuestions = ({ control }: SpecificQuestionsProps) => (
             <FormControl>
               {/* Usamos o CurrencyInput como o controlador */}
               <CurrencyInput
-              className=" rounded-2xl border-gray-400 bg-white"
+                className=" rounded-2xl border-gray-400 bg-white"
                 id="faturamento_mensal_da_empresa" // Bom para acessibilidade
                 name={field.name}
                 placeholder="R$ 80.000,00"
@@ -798,7 +798,7 @@ const CapitalGiroQuestions = ({ control }: SpecificQuestionsProps) => (
                 intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
                 customInput={Input}
                 onValueChange={(value, name) => {
-                 
+
                   const numericValue = value ? parseFloat(value) : undefined;
                   field.onChange(numericValue);
                 }}
@@ -838,7 +838,7 @@ const renderSpecificQuestions = (tipo: string, control: Control<FieldValues>) =>
 };
 
 const SimulacaoPage = () => {
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
@@ -903,7 +903,7 @@ const SimulacaoPage = () => {
   };
 
 
-const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' | 'login') => {
+  const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' | 'login') => {
     setIsLoading(true);
     try {
       // Tenta recuperar o token para saber se o usuário já está logado
@@ -917,7 +917,7 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
         dados_entrada: data,
         resultado_simulacao: resultado,
         // Informação crucial para o backend vincular ao User model
-        user_email: data.email 
+        user_email: data.email
       };
 
       await api.post("/api/simulacoes/salvar-lead", payload, {
@@ -927,75 +927,75 @@ const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' 
 
       if (destino === 'whatsapp') {
 
-                let msg = `Olá! Meu nome é *${data.full_name}*.\n`;
-              msg += `*Dados Pessoais:*\n`;
-              msg += `   • Nascimento: ${new Date(data.data_nascimento).toLocaleDateString('pt-BR')}\n`;
-              msg += `   • Local: ${data.cidade} - ${data.estado}\n`;
-              msg += `   • Contato: ${data.phone}\n`;
-              msg += `   • E-mail: ${data.email}\n\n`;
+        let msg = `Olá! Meu nome é *${data.full_name}*.\n`;
+        msg += `*Dados Pessoais:*\n`;
+        msg += `   • Nascimento: ${new Date(data.data_nascimento).toLocaleDateString('pt-BR')}\n`;
+        msg += `   • Local: ${data.cidade} - ${data.estado}\n`;
+        msg += `   • Contato: ${data.phone}\n`;
+        msg += `   • E-mail: ${data.email}\n\n`;
 
-              msg += `*Resumo da Simulação:*\n`;
-              msg += `   • Motivo: ${motivoSelecionado === 'outro' ? data.especificacao_motivo : motivoSelecionado}\n`;
-              msg += `   • Produto: ${tipoEfetivo.toUpperCase()}\n`;
-              msg += `   • Valor: R$ ${data.valor_desejado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
-              msg += `   • Prazo: ${data.prazo_meses}x de *R$ ${resultado?.valor_parcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}*\n\n`;
+        msg += `*Resumo da Simulação:*\n`;
+        msg += `   • Motivo: ${motivoSelecionado === 'outro' ? data.especificacao_motivo : motivoSelecionado}\n`;
+        msg += `   • Produto: ${tipoEfetivo.toUpperCase()}\n`;
+        msg += `   • Valor: R$ ${data.valor_desejado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+        msg += `   • Prazo: ${data.prazo_meses}x de *R$ ${resultado?.valor_parcela.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}*\n\n`;
 
-              switch (tipoEfetivo) {
-                case 'imovel-garantia':
-                  msg += `*Dados do Imóvel:*\n`;
-                  msg += `   • Tipo: ${data.imovel_tipo || 'N/A'}\n`;
-                  msg += `   • Está pagando financiamento?: ${data.imovel_esta_pagando === 'sim' ? 'Sim' : 'Não'}\n`;
-                  msg += '   • valor da imovel ' + data.valor_imovel + '\n';
-                  msg += `   • Matrícula: ${data.imovel_matricula || 'N/A'}\n`;
-                  msg += `   • Proprietário: ${data.imovel_proprietario || 'N/A'}\n\n`;
-                
-                  break;
+        switch (tipoEfetivo) {
+          case 'imovel-garantia':
+            msg += `*Dados do Imóvel:*\n`;
+            msg += `   • Tipo: ${data.imovel_tipo || 'N/A'}\n`;
+            msg += `   • Está pagando financiamento?: ${data.imovel_esta_pagando === 'sim' ? 'Sim' : 'Não'}\n`;
+            msg += '   • valor da imovel ' + data.valor_imovel + '\n';
+            msg += `   • Matrícula: ${data.imovel_matricula || 'N/A'}\n`;
+            msg += `   • Proprietário: ${data.imovel_proprietario || 'N/A'}\n\n`;
 
-                case 'veiculo-garantia':
-                  msg += `*Dados do Veículo:*\n`;
-                  msg += `   • Ano: ${data.veiculo_ano || 'N/A'}\n`;
-                  msg += `   • Valor FIPE: R$ ${Number(data.veiculo_valor_fipe).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
-                  msg += `   • Proprietário: ${data.veiculo_proprietario || 'N/A'}\n`;
-                  msg += `   • Modelo: ${data.veiculo_marca} ${data.veiculo_modelo}\n`;
-                  msg += `   • Placa: ${data.veiculo_placa || 'N/A'}\n\n`;
-                  break;
+            break;
 
-                case 'credito-consignado':
-                  msg += `*Dados Profissionais:*\n`;
-                  msg += `   • Empresa: ${data.consignado_empresa}\n`;
-                  msg += `   • Salário Bruto: R$ ${Number(data.consignado_salario_bruto).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
-                  msg += `   • Regime: ${data.consignado_regime_clt ? 'CLT' : 'Outro'}\n\n`;
-                  break;
-                
-                case 'capital-de-giro':
-                  msg += `*Dados Empresariais:*\n`;
-                  msg += `   • CNPJ: ${data.cnpj || 'Informado no formulário'}\n\n`;
-                  break;
-                case 'adiantamento-recebiveis':
-                case 'trava-maquininha':
-                  msg += `*Dados da Maquininha:*\n`;
-                  msg += `   • Faturamento Mensal: R$ ${Number(data.faturamento_maquininha).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
-                  msg += `   • Operadora Principal: ${data.operadora_maquininha}\n`;
-                  msg += `   • CNPJ Vinculado: ${data.cnpj|| 'N/A'}\n\n`;
-                  break;
-              }
+          case 'veiculo-garantia':
+            msg += `*Dados do Veículo:*\n`;
+            msg += `   • Ano: ${data.veiculo_ano || 'N/A'}\n`;
+            msg += `   • Valor FIPE: R$ ${Number(data.veiculo_valor_fipe).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+            msg += `   • Proprietário: ${data.veiculo_proprietario || 'N/A'}\n`;
+            msg += `   • Modelo: ${data.veiculo_marca} ${data.veiculo_modelo}\n`;
+            msg += `   • Placa: ${data.veiculo_placa || 'N/A'}\n\n`;
+            break;
 
-              msg += `Tenho interesse em dar prosseguimento ao meu crédito!`;
+          case 'credito-consignado':
+            msg += `*Dados Profissionais:*\n`;
+            msg += `   • Empresa: ${data.consignado_empresa}\n`;
+            msg += `   • Salário Bruto: R$ ${Number(data.consignado_salario_bruto).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+            msg += `   • Regime: ${data.consignado_regime_clt ? 'CLT' : 'Outro'}\n\n`;
+            break;
 
-              window.open(`https://wa.me/5535988284302?text=${encodeURIComponent(msg.trim())}`, '_blank');
+          case 'capital-de-giro':
+            msg += `*Dados Empresariais:*\n`;
+            msg += `   • CNPJ: ${data.cnpj || 'Informado no formulário'}\n\n`;
+            break;
+          case 'adiantamento-recebiveis':
+          case 'trava-maquininha':
+            msg += `*Dados da Maquininha:*\n`;
+            msg += `   • Faturamento Mensal: R$ ${Number(data.faturamento_maquininha).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+            msg += `   • Operadora Principal: ${data.operadora_maquininha}\n`;
+            msg += `   • CNPJ Vinculado: ${data.cnpj || 'N/A'}\n\n`;
+            break;
+        }
 
-    
+        msg += `Tenho interesse em dar prosseguimento ao meu crédito!`;
+
+        window.open(`https://wa.me/5535988284302?text=${encodeURIComponent(msg.trim())}`, '_blank');
+
+
       } else {
-       
-        // Exemplo do que deve estar no seu navigate da SimulacaoPage
-navigate('/login', { 
-  state: { 
-    full_name: data.full_name, 
-    email: data.email, 
-    phone: data.phone, 
 
-  } 
-});
+        // Exemplo do que deve estar no seu navigate da SimulacaoPage
+        navigate('/login', {
+          state: {
+            full_name: data.full_name,
+            email: data.email,
+            phone: data.phone,
+
+          }
+        });
       }
     } catch (error) {
       console.error("Erro no salvamento:", (error as AxiosError).response?.data);
@@ -1009,7 +1009,7 @@ navigate('/login', {
     <>
       <Header />
       <div className="container max-w-4xl mx-auto py-12 md:py-24 px-4">
-      {resultado && (
+        {resultado && (
           <Card className="mb-8 border-2 border-blue-500 bg-white shadow-lg animate-in zoom-in-95 duration-500">
             <CardContent className="pt-6">
               <div className="text-center mb-6">
@@ -1034,8 +1034,8 @@ navigate('/login', {
                 <div className="bg-slate-50 p-4 border-b md:border-b-0 md:border-r text-center">
                   <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">Taxa Mensal</p>
                   <p className="text-lg font-semibold text-blue-600">
-                    {tipoEfetivo === 'imovel-garantia' ? '1,00%' : 
-                     tipoEfetivo === 'veiculo-garantia' ? '1,50%' : '2,00%'}
+                    {tipoEfetivo === 'imovel-garantia' ? '1,00%' :
+                      tipoEfetivo === 'veiculo-garantia' ? '1,50%' : '2,00%'}
                   </p>
                 </div>
 
@@ -1065,89 +1065,89 @@ navigate('/login', {
 
         <Card>
           <CardHeader>
-              <CardTitle className="text-3xl md:text-5xl font-black text-[#0062FF] tracking-tighter leading-none">
-                        Estruture seu 
-                        <span className="text-gray-400 font-light italic text-4xl ml-3 ">Planejamento. {tipoEfetivo}</span>
-                        
-                    </CardTitle>
+            <CardTitle className="text-gray-400 font-light italic text-4xl ml-3 ">
+              Estruture seu
+              <span className="text-gray-400 font-light italic text-4xl ml-3 ">Planejamento. </span>
 
-           
+            </CardTitle>
+
+
           </CardHeader>
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit((data) => showLeadForm ? handleFinalizarLead(data, 'whatsapp') : handleCalcular(data))} className="space-y-8">
-                
+
                 {!showLeadForm ? (
                   <>
                     {/* PASSO 1: DADOS FINANCEIROS */}
-     <StepSection step={1} title="Dados do Empréstimo">
-  <BigCurrencyField control={form.control} name="valor_desejado" label="Quanto você precisa?" />
-  
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <FormField
-      control={form.control}
-      name="prazo_meses"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
-            Prazo (meses)
-          </FormLabel>
-          <Input className="border-gray-400 focus:bg-white bg-gray-50/50" type="number" {...field} />
-        </FormItem>
-      )}
-    />
+                    <StepSection step={1} title="Dados do Empréstimo">
+                      <BigCurrencyField control={form.control} name="valor_desejado" label="Quanto você precisa?" />
 
-    <FormField
-      control={form.control}
-      name="motivo_emprestimo"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
-            Motivo do crédito
-          </FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl className="border-gray-400 focus:bg-white bg-gray-50/50">
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione" />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent className="rounded-2xl border-none shadow-2xl">
-              <SelectItem value="quitar_dividas">Quitar Dívidas</SelectItem>
-              <SelectItem value="investimento">Investimento</SelectItem>
-              <SelectItem value="reforma">Reforma</SelectItem>
-              <SelectItem value="compra_bem">Compra de Bem</SelectItem>
-              <SelectItem value="viagem">Viagem</SelectItem>
-              <SelectItem value="outro">Outro</SelectItem>
-            </SelectContent>
-          </Select>
-        </FormItem>
-      )}
-    />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <FormField
+                          control={form.control}
+                          name="prazo_meses"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
+                                Prazo (meses)
+                              </FormLabel>
+                              <Input className="border-gray-400 focus:bg-white bg-gray-50/50" type="number" {...field} />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="motivo_emprestimo"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
+                                Motivo do crédito
+                              </FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl className="border-gray-400 focus:bg-white bg-gray-50/50">
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Selecione" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="rounded-2xl border-none shadow-2xl">
+                                  <SelectItem value="quitar_dividas">Quitar Dívidas</SelectItem>
+                                  <SelectItem value="investimento">Investimento</SelectItem>
+                                  <SelectItem value="reforma">Reforma</SelectItem>
+                                  <SelectItem value="compra_bem">Compra de Bem</SelectItem>
+                                  <SelectItem value="viagem">Viagem</SelectItem>
+                                  <SelectItem value="outro">Outro</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </FormItem>
+                          )}
+                        />
 
 
-    {motivoSelecionado === "outro" && (
-      <FormField
-        control={form.control}
-        name="especificacao_motivo" // Nome alterado aqui
-        render={({ field }) => (
-          <FormItem className="animate-in fade-in slide-in-from-top-2 md:col-span-2">
-            <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
-              Especifique o motivo
-            </FormLabel>
-            <FormControl>
-              <Input 
-                className="border-gray-400 focus:bg-white bg-gray-50/50" 
-                placeholder="Descreva aqui..." 
-                {...field} 
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    )}
-  </div>
-</StepSection>   
+                        {motivoSelecionado === "outro" && (
+                          <FormField
+                            control={form.control}
+                            name="especificacao_motivo" // Nome alterado aqui
+                            render={({ field }) => (
+                              <FormItem className="animate-in fade-in slide-in-from-top-2 md:col-span-2">
+                                <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-600">
+                                  Especifique o motivo
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    className="border-gray-400 focus:bg-white bg-gray-50/50"
+                                    placeholder="Descreva aqui..."
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        )}
+                      </div>
+                    </StepSection>
                     <StepSection step={2} title="Detalhes Adicionais">
                       {renderSpecificQuestions(tipoEfetivo, form.control as unknown as Control<FieldValues>)}
                     </StepSection>
@@ -1188,8 +1188,8 @@ navigate('/login', {
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl><SelectTrigger><SelectValue placeholder="UF" /></SelectTrigger></FormControl>
                             <SelectContent>
-                              {[ 'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 
-                                'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
+                              {['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
+                                'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN',
                                 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'].map(uf => <SelectItem key={uf} value={uf}>{uf}</SelectItem>)}
                             </SelectContent>
                           </Select>
@@ -1203,7 +1203,7 @@ navigate('/login', {
                   <Button type="submit" disabled={isLoading} size="lg" className="w-full h-14 text-lg bg-blue-600 hover:bg-blue-700 shadow-md">
                     {isLoading ? <Loader2 className="animate-spin mr-2" /> : (showLeadForm ? 'Finalizar e WhatsApp' : 'Calcular e Ver Resultado')}
                   </Button>
-                  
+
                   {showLeadForm && (
                     <Button variant="outline" type="button" onClick={form.handleSubmit((data) => handleFinalizarLead(data, 'login'))} className="w-full">
                       <UserPlus className="mr-2 h-4 w-4" /> Continuar no site (Fazer Login)
