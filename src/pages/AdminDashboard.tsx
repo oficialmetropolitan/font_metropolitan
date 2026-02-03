@@ -165,19 +165,33 @@ const AdminDashboard = () => {
 
   const carregarDados = async () => {
     setLoading(true);
+
     try {
       const token = localStorage.getItem("token");
+
+      if (!token) {
+        toast.error("Você não está autenticado!");
+        return;
+      }
+
       const res = await api.get("/api/simulacoes/admin/todas", {
         headers: { Authorization: `Bearer ${token}` }
       });
+
       setSolicitacoes(res.data);
-    } catch {
-      toast.error("Erro ao sincronizar dados.");
+
+    } catch (error) {
+      console.error("Erro na API:", error);
+      toast.error("Erro ao carregar dados do servidor");
     } finally {
       setLoading(false);
     }
   };
 
+  // CARREGA DADOS AO ABRIR A PÁGINA
+  useEffect(() => {
+    carregarDados();
+  }, []);
   const carregarUsuario = async (userId) => {
     if (usuarios[userId]) return;
     try {
@@ -304,27 +318,30 @@ useEffect(() => {
       <Header />
 
       <main className="container max-w-7xl mx-auto py-12 px-6">
-        {/* HEADER DO DASHBOARD */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
-          <div className="space-y-1">
-            <h1 className="text-4xl font-black text-navy-dark tracking-tight">Gestão de Propostas</h1>
-            <p className="text-gray-500 font-medium">Painel de controle administrativo da Metropolitan.</p>
+
+        {loading ? (
+          <div className="flex flex-col items-center py-20">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+            <p className="mt-4 text-gray-500">Carregando dados...</p>
           </div>
-          <div className="flex gap-3">
-             <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        ) : (
+
+          <>
+            <div className="flex justify-between mb-6">
+              <h1 className="text-3xl font-bold">Gestão de Propostas</h1>
+
+              <div className="flex gap-3">
                 <Input
-                  placeholder="Buscar proposta ou ID..."
+                  placeholder="Buscar..."
                   value={busca}
                   onChange={(e) => setBusca(e.target.value)}
-                  className="pl-10 w-[300px] rounded-full border-gray-200 bg-white shadow-sm"
                 />
-             </div>
-             <Button onClick={carregarDados} variant="outline" className="rounded-full shadow-sm">
-                <RefreshCcw className={loading ? "animate-spin" : ""} size={16} />
-             </Button>
-          </div>
-        </div>
+
+                <Button onClick={carregarDados}>
+                  <RefreshCcw size={16} />
+                </Button>
+              </div>
+            </div>
 
         {/* TABELA PRINCIPAL */}
         <Card className="rounded-[32px] border-none shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden bg-white">
@@ -479,6 +496,8 @@ useEffect(() => {
                             </div>
           </DialogContent>
         </Dialog>
+          </>
+        )}                   
       </main>
     </div>
   );

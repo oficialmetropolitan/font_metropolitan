@@ -41,7 +41,7 @@ const VerificacaoPage = () => {
     e.preventDefault();
     setIsVerifying(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://api.bancometropolitan.com.br';
       const response = await axios.post(`${apiUrl}/api/auth/verify`, { email, code });
 
       toast.success("E-mail verificado com sucesso!");
@@ -61,7 +61,7 @@ const VerificacaoPage = () => {
   const handleResend = async () => {
     setIsResending(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://api.bancometropolitan.com.br';
       await axios.post(`${apiUrl}/api/auth/resend-verification`, { email });
 
       toast.success("Um novo código foi enviado para o seu e-mail.");

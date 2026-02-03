@@ -139,9 +139,9 @@ const HomeEquityQuestions = ({ control }: SpecificQuestionsProps) => (
         <FormItem>
           <FormLabel className="text-xs font-bold text-gray-500 uppercase tracking-widest">Valor aproximado do Imóvel</FormLabel>
           <FormControl>
-            {/* Usamos o CurrencyInput como o controlador */}
+           
             <CurrencyInput
-              id="valor_imovel" // Bom para acessibilidade
+              id="valor_imovel"
               name={field.name}
               placeholder="R$ 300.000,00"
               value={field.value}
@@ -1035,7 +1035,7 @@ const SimulacaoPage = () => {
                   <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">Taxa Mensal</p>
                   <p className="text-lg font-semibold text-blue-600">
                     {tipoEfetivo === 'imovel-garantia' ? '1,00%' :
-                      tipoEfetivo === 'veiculo-garantia' ? '1,50%' : '2,00%'}
+                      tipoEfetivo === 'veiculo-garantia' ? '1,50%' : '3,00%'}
                   </p>
                 </div>
 
@@ -1055,9 +1055,18 @@ const SimulacaoPage = () => {
               </div>
 
               <div className="pt-6 flex justify-center">
-                <Button variant="ghost" size="sm" onClick={() => setResultado(null)} className="text-slate-400 hover:text-blue-600 transition-colors">
-                  <RefreshCcw className="mr-2 h-3 w-3" /> Refazer simulação
-                </Button>
+               <Button 
+  variant="ghost" 
+  size="sm" 
+  onClick={() => {
+    setResultado(null);      // Remove o card de resultado
+    setShowLeadForm(false);   // Volta para o Passo 1 e 2
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Opcional: sobe a tela para o início
+  }} 
+  className="text-slate-400 hover:text-blue-600 transition-colors"
+>
+  <RefreshCcw className="mr-2 h-3 w-3" /> Refazer simulação
+</Button>
               </div>
             </CardContent>
           </Card>

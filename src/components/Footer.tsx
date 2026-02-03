@@ -44,6 +44,8 @@ const Footer = () => {
               Crédito inteligente para impulsionar seus sonhos. 
               Processo 100% digital, seguro e transparente através do modelo de securitização.
             </p>
+
+           {/*
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <Facebook className="w-5 h-5" />
@@ -54,7 +56,8 @@ const Footer = () => {
               <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
                 <Linkedin className="w-5 h-5" />
               </a>
-            </div>
+            </div>*/}
+
           </div>
 
       

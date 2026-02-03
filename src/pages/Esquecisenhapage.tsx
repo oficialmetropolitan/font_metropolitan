@@ -18,7 +18,7 @@ const EsqueciSenhaPage = () => {
         setLoading(true);
         setSubmitted(false);
         try {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
+            const apiUrl = import.meta.env.VITE_API_URL || 'https://api.bancometropolitan.com.br';
             const response = await axios.post(`${apiUrl}/api/auth/forgot-password`, { email });
             toast.success(response.data.message);
             setSubmitted(true);

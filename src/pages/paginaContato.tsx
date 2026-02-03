@@ -32,7 +32,7 @@ const PaginaContato = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io/contact/send-email", {
+      const response = await fetch("https://api.bancometropolitan.com.br/contact/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
