@@ -32,7 +32,7 @@ const PaginaContato = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://127.0.0.1:8000/contact/send-email", {
+      const response = await fetch("http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io/contact/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -59,7 +59,7 @@ const PaginaContato = () => {
   return (
     <div className="min-h-screen bg-[#FBFBFC]">
       <Header />
-      
+
       {/* --- Header de Alto Padrão --- */}
       <section className="bg-[#10161E] pt-24 pb-40 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
@@ -73,7 +73,7 @@ const PaginaContato = () => {
 
       <div className="container-custom -mt-24 pb-24 relative z-20">
         <div className="grid lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* --- Coluna de Informações (Esquerda) --- */}
           <div className="lg:col-span-4 space-y-6">
             <div className="bg-white p-10 rounded-[32px] shadow-xl border border-gray-100 space-y-10">
@@ -131,7 +131,7 @@ const PaginaContato = () => {
           <div className="lg:col-span-8">
             <div className="bg-white p-8 md:p-16 rounded-[32px] shadow-xl border border-gray-100 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
-              
+
               <div className="relative z-10">
                 <div className="mb-10 space-y-2">
                   <h2 className="text-3xl font-bold text-navy-dark tracking-tight">Envie uma mensagem</h2>

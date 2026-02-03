@@ -18,7 +18,7 @@ const EsqueciSenhaPage = () => {
         setLoading(true);
         setSubmitted(false);
         try {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
             const response = await axios.post(`${apiUrl}/api/auth/forgot-password`, { email });
             toast.success(response.data.message);
             setSubmitted(true);
@@ -35,8 +35,8 @@ const EsqueciSenhaPage = () => {
                 <CardHeader className="text-center">
                     <CardTitle className="text-2xl">Esqueceu sua senha?</CardTitle>
                     <CardDescription>
-                        {submitted 
-                            ? "Verifique sua caixa de entrada (e spam)!" 
+                        {submitted
+                            ? "Verifique sua caixa de entrada (e spam)!"
                             : "Digite seu e-mail e enviaremos um link para redefinir sua senha."
                         }
                     </CardDescription>
@@ -61,7 +61,7 @@ const EsqueciSenhaPage = () => {
                         </CardContent>
                     </form>
                 )}
-                 <div className="p-6 text-center text-sm">
+                <div className="p-6 text-center text-sm">
                     <Link to="/login" className="text-primary hover:underline">
                         Voltar para o Login
                     </Link>

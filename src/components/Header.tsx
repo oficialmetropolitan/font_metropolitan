@@ -135,7 +135,7 @@ const Header = () => {
                 ) : (
                   <>
                     <Button variant="ghost" className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 hover:text-navy-dark" asChild>
-                      <Link to="/login text-white">Área do Cliente</Link>
+                      <Link to="/login">Área do Cliente</Link>
                     </Button>
                     <Button className="bg-navy-dark hover:bg-primary text-white px-8 rounded-full text-[10px] font-bold tracking-[0.2em] transition-all shadow-xl hover:shadow-primary/20" asChild>
                       <HashLink smooth to="/#solucao">SOLUÇÕES</HashLink>

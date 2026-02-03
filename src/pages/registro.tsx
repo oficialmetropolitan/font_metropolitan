@@ -7,9 +7,9 @@ import { Eye, EyeOff, Loader2 } from "lucide-react"; // NOVO: Importando ícone 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import axios from "axios";
-import { toast } from "sonner"; 
-import { useState, useEffect } from "react"; 
-import { Link, useNavigate, useLocation } from "react-router-dom"; 
+import { toast } from "sonner";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +19,7 @@ const Register = () => {
   const location = useLocation(); // Hook para pegar os dados da rota
 
   const [formData, setFormData] = useState({
-    full_name: "", 
+    full_name: "",
     email: "",
     phone: "",
     cpf: "",
@@ -30,10 +30,10 @@ const Register = () => {
 
 
   useEffect(() => {
-   
+
     if (location.state) {
       const { full_name, email, phone, cpf } = location.state;
-      
+
       setFormData(prev => ({
         ...prev,
         full_name: full_name || prev.full_name,
@@ -65,9 +65,9 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
-      
-    
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
+
+
       const response = await axios.post(`${apiUrl}/api/auth/clientes`, {
         full_name: formData.full_name,
         email: formData.email,
@@ -76,7 +76,7 @@ const Register = () => {
         password: formData.password,
       });
 
-      
+
       toast.success("Conta criada! Verifique seu e-mail para ativar.");
       console.log("Resposta do cadastro:", response.data.message);
 
@@ -96,8 +96,8 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-gradient-subtle flex flex-col">
-      
-      
+
+
       <main className="flex-1 flex items-center justify-center py-12 px-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
@@ -108,7 +108,7 @@ const Register = () => {
               Preencha os dados para começar
             </CardDescription>
           </CardHeader>
-          
+
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -122,7 +122,7 @@ const Register = () => {
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="email">E-mail</Label>
                 <Input
@@ -134,7 +134,7 @@ const Register = () => {
                   required
                 />
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="phone">Telefone</Label>
@@ -147,7 +147,7 @@ const Register = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="cpf">CPF</Label>
                   <Input
@@ -160,7 +160,7 @@ const Register = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="password">Senha</Label>
                 <div className="relative">
@@ -181,7 +181,7 @@ const Register = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirmar senha</Label>
                 <div className="relative">
@@ -202,7 +202,7 @@ const Register = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="flex items-start space-x-2">
                 <div className="flex items-center h-5">
                   <input
@@ -226,17 +226,17 @@ const Register = () => {
                 </Label>
               </div>
             </CardContent>
-            
+
             <CardFooter className="flex flex-col space-y-4">
               <Button type="submit" className="w-full btn-primary" disabled={loading}>
                 {loading ? (
-                    <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Criando conta...
-                    </>
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Criando conta...
+                  </>
                 ) : "Criar conta"}
               </Button>
-              
+
               <div className="text-center text-sm">
                 <span className="text-muted-foreground">Já tem uma conta? </span>
                 <Link to="/login" className="text-primary hover:underline font-medium">

@@ -13,7 +13,7 @@ const VerificacaoPage = () => {
   const [code, setCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  
+
   // NOVO: Estado para o temporizador de 40 segundos
   const [countdown, setCountdown] = useState(40);
 
@@ -36,12 +36,12 @@ const VerificacaoPage = () => {
     return () => clearInterval(timerId);
   }, [countdown]); // Este efeito roda sempre que o 'countdown' mudar.
 
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsVerifying(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
       const response = await axios.post(`${apiUrl}/api/auth/verify`, { email, code });
 
       toast.success("E-mail verificado com sucesso!");
@@ -61,14 +61,14 @@ const VerificacaoPage = () => {
   const handleResend = async () => {
     setIsResending(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
       await axios.post(`${apiUrl}/api/auth/resend-verification`, { email });
-      
+
       toast.success("Um novo código foi enviado para o seu e-mail.");
       // Reinicia o temporizador
       setCountdown(40);
     } catch (error) {
-       if (axios.isAxiosError(error) && error.response) {
+      if (axios.isAxiosError(error) && error.response) {
         toast.error(`Falha ao reenviar: ${error.response.data.detail || 'Tente novamente.'}`);
       } else {
         toast.error("Erro de conexão. Tente novamente.");

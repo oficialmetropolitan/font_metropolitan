@@ -1,4 +1,3 @@
-// src/pages/EditProfilePage.tsx
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,28 +15,27 @@ import { ArrowRight, Loader2, User, Home, Briefcase, ChevronLeft } from "lucide-
 import { ProfileResponse } from '@/types';
 import Header from '@/components/Header';
 
-// Constantes mantidas
 const EDUCATION_LEVELS = ["Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto", "Médio Completo", "Superior Incompleto", "Superior Completo", "Pós-graduação", "Mestrado", "Doutorado"];
 const MARITAL_STATUS = ["Solteiro(a)", "Casado(a)", "Divorciado(a)", "Viúvo(a)", "União Estável"];
 const OCCUPATIONS = ["Assalariado", "Autônomo", "Empresário", "Profissional Liberal", "Aposentado", "Pensionista", "Desempregado", "Estudante"];
 
+// Schema: Todos os campos como .optional() e sem min(1)
 const profileSchema = z.object({
-  birthDate: z.string().min(1, "Data de nascimento obrigatória"),
-  gender: z.string().min(1, "Gênero obrigatório"),
-  education: z.string().min(1, "Grau de instrução obrigatório"),
-  maritalStatus: z.string().min(1, "Estado civil obrigatório"),
-  motherName: z.string().min(2, "Nome da mãe obrigatório"),
-  cep: z.string().min(8, "CEP inválido").max(9, "CEP inválido"),
-  street: z.string().min(1, "Logradouro obrigatório"),
-  number: z.string().min(1, "Número obrigatório"),
+  birthDate: z.string().optional(),
+  gender: z.string().optional(),
+  education: z.string().optional(),
+  maritalStatus: z.string().optional(),
+  motherName: z.string().optional(),
+  cep: z.string().optional(),
+  street: z.string().optional(),
+  number: z.string().optional(),
   complement: z.string().optional(),
-  neighborhood: z.string().min(1, "Bairro obrigatório"),
-  city: z.string().min(1, "Cidade obrigatória"),
-  state: z.string().min(1, "Estado obrigatório"),
-  occupation: z.string().min(1, "Ocupação obrigatória"),
-  monthlyIncome: z.preprocess((val) => Number(val), z.number().min(0, "Renda mensal obrigatória")),
+  neighborhood: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  occupation: z.string().optional(),
+  monthlyIncome: z.preprocess((val) => (val === "" || val === null ? 0 : Number(val)), z.number().optional()),
   data_admissao: z.string().optional(),
-  
 });
 
 type ProfileForm = z.infer<typeof profileSchema>;
@@ -53,7 +51,7 @@ const EditProfilePage = () => {
     defaultValues: {
       birthDate: "", gender: "", education: "", maritalStatus: "", motherName: "",
       cep: "", street: "", number: "", complement: "", neighborhood: "",
-      city: "", state: "", occupation: "", monthlyIncome: 0,
+      city: "", state: "", occupation: "", monthlyIncome: 0, data_admissao: "",
     },
   });
 
@@ -68,8 +66,44 @@ const EditProfilePage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         const p = response.data;
+
+        // Função para formatar a data para o padrão do input (yyyy-mm-dd)
+const formatToInputDate = (dateString: string | null | undefined) => {
+  if (!dateString) return "";
+
+  try {
+    // Se já estiver no formato yyyy-mm-dd, retorna direto
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString;
+    }
+
+    // Se vier como ISO com hora
+    if (dateString.includes("T")) {
+      return dateString.split("T")[0];
+    }
+
+    // Se vier no formato brasileiro dd/mm/yyyy
+    if (dateString.includes("/")) {
+      const [day, month, year] = dateString.split("/");
+      return `${year}-${month}-${day}`;
+    }
+
+    // Última tentativa: converter com Date
+    const d = new Date(dateString);
+    if (!isNaN(d.getTime())) {
+      return d.toISOString().split("T")[0];
+    }
+
+    return "";
+  } catch {
+    return "";
+  }
+};
+console.log("DATA NASCIMENTO DA API:", p.data_nascimento);
+
         reset({
-          birthDate: p.data_nascimento || "",
+          
+          birthDate: formatToInputDate(p.data_nascimento), // Ajuste aqui para puxar o valor
           gender: p.genero || "",
           education: p.escolaridade || "",
           maritalStatus: p.estado_civil || "",
@@ -83,8 +117,7 @@ const EditProfilePage = () => {
           state: p.estado || "",
           occupation: p.profissao || "",
           monthlyIncome: Number(p.renda_mensal) || 0,
-          data_admissao: p.data_admissao || "",
-  
+          data_admissao: formatToInputDate(p.data_admissao), // Também ajustado para admissão
         });
       } catch (error) {
         toast.error("Erro ao carregar dados.");
@@ -92,6 +125,7 @@ const EditProfilePage = () => {
     };
     fetchProfile();
   }, [reset, navigate]);
+
 
   const handleCepBlur = async (cepValue: string) => {
     const cep = cepValue.replace(/\D/g, '');
@@ -116,12 +150,24 @@ const EditProfilePage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await api.put<ProfileResponse>("/api/perfil/me", {
-        data_nascimento: data.birthDate, genero: data.gender, escolaridade: data.education,
-        estado_civil: data.maritalStatus, nome_mae: data.motherName, cep: data.cep,
-        logradouro: data.street, numero: data.number, complemento: data.complement || '',
-        bairro: data.neighborhood, cidade: data.city, estado: data.state,
-        profissao: data.occupation, renda_mensal: data.monthlyIncome,
-        possui_restricao: false, possui_veiculo: false, possui_imovel: false,
+        data_nascimento: data.birthDate, // Garantindo o envio da data de nascimento
+        genero: data.gender,
+        escolaridade: data.education,
+        estado_civil: data.maritalStatus,
+        nome_mae: data.motherName,
+        cep: data.cep,
+        logradouro: data.street,
+        numero: data.number,
+        complemento: data.complement || '',
+        bairro: data.neighborhood,
+        cidade: data.city,
+        estado: data.state,
+        profissao: data.occupation,
+        renda_mensal: data.monthlyIncome,
+        data_admissao: data.data_admissao,
+        possui_restricao: false,
+        possui_veiculo: false,
+        possui_imovel: false,
       }, { headers: { Authorization: `Bearer ${token}` } });
 
       setProfile(response.data);
@@ -138,7 +184,6 @@ const EditProfilePage = () => {
     <div className="min-h-screen bg-[#FBFBFC]">
       <Header />
       <div className="max-w-4xl mx-auto py-12 px-4">
-        {/* Header de Navegação */}
         <button 
           onClick={() => navigate(-1)}
           className="flex items-center text-sm text-gray-500 hover:text-navy-dark transition-colors mb-6 group"
@@ -149,13 +194,12 @@ const EditProfilePage = () => {
 
         <div className="mb-10">
           <h1 className="text-4xl font-extrabold text-navy-dark tracking-tighter">Configurações de Perfil</h1>
-          <p className="text-gray-500 mt-2 font-light">Mantenha seus dados atualizados para melhores condições de crédito.</p>
+          <p className="text-gray-500 mt-2 font-light">Mantenha seus dados atualizados.</p>
         </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             
-            {/* Seção: Dados Pessoais */}
             <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[32px] overflow-hidden">
               <CardHeader className="bg-white border-b border-gray-50 px-8 py-6">
                 <div className="flex items-center gap-3">
@@ -169,25 +213,41 @@ const EditProfilePage = () => {
                 </div>
               </CardHeader>
               <CardContent className="p-8 grid md:grid-cols-2 gap-6">
-                <FormField control={form.control} name="birthDate" render={({ field }) => (
-                  <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Nascimento</FormLabel>
-                  <FormControl><Input {...field} type="date" className="h-12 rounded-xl" /></FormControl><FormMessage /></FormItem>
+                {/* Campo Data de Nascimento */}
+               <FormField control={form.control} name="birthDate" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Nascimento</FormLabel>
+                    <FormControl>
+                      {/* Adicionado o value diretamente para garantir a sincronia */}
+                      <Input 
+                        {...field} 
+                        type="date" 
+                        value={field.value || ""} 
+                        className="h-12 rounded-xl" 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )} />
+
                 <FormField control={form.control} name="gender" render={({ field }) => (
                   <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Gênero</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl>
                   <SelectContent className="rounded-xl"><SelectItem value="masculino">Masculino</SelectItem><SelectItem value="feminino">Feminino</SelectItem><SelectItem value="outro">Outro</SelectItem></SelectContent></Select><FormMessage /></FormItem>
                 )} />
+                
                 <FormField control={form.control} name="education" render={({ field }) => (
                   <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Escolaridade</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl>
                   <SelectContent className="rounded-xl">{EDUCATION_LEVELS.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>
                 )} />
+
                 <FormField control={form.control} name="maritalStatus" render={({ field }) => (
                   <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Estado Civil</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl>
                   <SelectContent className="rounded-xl">{MARITAL_STATUS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>
                 )} />
+
                 <FormField control={form.control} name="motherName" render={({ field }) => (
                   <FormItem className="md:col-span-2"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Nome da Mãe</FormLabel>
                   <FormControl><Input {...field} placeholder="Nome completo" className="h-12 rounded-xl" /></FormControl><FormMessage /></FormItem>
@@ -195,116 +255,77 @@ const EditProfilePage = () => {
               </CardContent>
             </Card>
 
-            {/* Seção: Endereço */}
+            {/* Seções de Endereço e Financeiro mantidas com campos opcionais */}
             <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[32px] overflow-hidden">
               <CardHeader className="bg-white border-b border-gray-50 px-8 py-6">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-xl">
                     <Home className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg font-bold text-navy-dark">Endereço de Residência</CardTitle>
-                    <CardDescription className="text-xs">Onde você mora atualmente</CardDescription>
-                  </div>
+                  <CardTitle className="text-lg font-bold text-navy-dark">Endereço</CardTitle>
                 </div>
               </CardHeader>
-              <CardContent className="p-8">
-                <div className="grid md:grid-cols-6 gap-6">
-                  <FormField control={form.control} name="cep" render={({ field }) => (
-                    <FormItem className="md:col-span-2"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">CEP</FormLabel>
-                    <FormControl><div className="relative">
-                      <Input {...field} maxLength={9} onBlur={(e) => { field.onBlur(); handleCepBlur(e.target.value); }} className="h-12 rounded-xl pr-10" />
-                      {isCepLoading && <Loader2 className="absolute right-3 top-3.5 h-5 w-5 animate-spin text-primary" />}
-                    </div></FormControl><FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="street" render={({ field }) => (
-                    <FormItem className="md:col-span-4"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Logradouro</FormLabel>
-                    <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl><FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="number" render={({ field }) => (
-                    <FormItem className="md:col-span-2"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Número</FormLabel>
-                    <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl><FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="complement" render={({ field }) => (
-                    <FormItem className="md:col-span-4"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Complemento</FormLabel>
-                    <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl><FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="neighborhood" render={({ field }) => (
-                    <FormItem className="md:col-span-2"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Bairro</FormLabel>
-                    <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl><FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="city" render={({ field }) => (
-                    <FormItem className="md:col-span-3"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Cidade</FormLabel>
-                    <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl><FormMessage /></FormItem>
-                  )} />
-                  <FormField control={form.control} name="state" render={({ field }) => (
-                    <FormItem className="md:col-span-1"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">UF</FormLabel>
-                    <FormControl><Input {...field} maxLength={2} className="h-12 rounded-xl uppercase text-center" /></FormControl><FormMessage /></FormItem>
-                  )} />
-                </div>
+              <CardContent className="p-8 grid md:grid-cols-6 gap-6">
+                <FormField control={form.control} name="cep" render={({ field }) => (
+                  <FormItem className="md:col-span-2"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">CEP</FormLabel>
+                  <FormControl><Input {...field} onBlur={(e) => handleCepBlur(e.target.value)} className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
+                <FormField control={form.control} name="street" render={({ field }) => (
+                  <FormItem className="md:col-span-4"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Logradouro</FormLabel>
+                  <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
+                <FormField control={form.control} name="number" render={({ field }) => (
+                  <FormItem className="md:col-span-2"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Número</FormLabel>
+                  <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
+                <FormField control={form.control} name="complement" render={({ field }) => (
+                  <FormItem className="md:col-span-4"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Complemento</FormLabel>
+                  <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
+                <FormField control={form.control} name="neighborhood" render={({ field }) => (
+                  <FormItem className="md:col-span-2"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Bairro</FormLabel>
+                  <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
+                <FormField control={form.control} name="city" render={({ field }) => (
+                  <FormItem className="md:col-span-3"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Cidade</FormLabel>
+                  <FormControl><Input {...field} className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
+                <FormField control={form.control} name="state" render={({ field }) => (
+                  <FormItem className="md:col-span-1"><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">UF</FormLabel>
+                  <FormControl><Input {...field} maxLength={2} className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
               </CardContent>
             </Card>
 
-            {/* Seção: Financeiro */}
             <Card className="border-none shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[32px] overflow-hidden">
               <CardHeader className="bg-white border-b border-gray-50 px-8 py-6">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-xl">
                     <Briefcase className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <CardTitle className="text-lg font-bold text-navy-dark">Vida Profissional</CardTitle>
-                    <CardDescription className="text-xs">Dados sobre ocupação e renda</CardDescription>
-                  </div>
+                  <CardTitle className="text-lg font-bold text-navy-dark">Vida Profissional</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="p-8 grid md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="occupation" render={({ field }) => (
-                  <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Ocupação Atual</FormLabel>
+                  <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Ocupação</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder="Selecione" /></SelectTrigger></FormControl>
-                  <SelectContent className="rounded-xl">{OCCUPATIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>
+                  <SelectContent className="rounded-xl">{OCCUPATIONS.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent></Select></FormItem>
                 )} />
                 <FormField control={form.control} name="monthlyIncome" render={({ field }) => (
-                  <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Renda Mensal Estimada</FormLabel>
-                  <FormControl><div className="relative">
-                    <span className="absolute left-4 top-3.5 text-gray-400 text-sm italic">R$</span>
-                    <Input {...field} type="number" className="h-12 rounded-xl pl-10" />
-                  </div></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Renda Mensal</FormLabel>
+                  <FormControl><Input {...field} type="number" className="h-12 rounded-xl" /></FormControl></FormItem>
                 )} />
-   <FormField 
-  control={form.control} 
-  name="data_admissao" 
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">
-        Data de Admissão *
-      </FormLabel>
-      <FormControl>
-        <Input 
-          {...field} 
-          type="date" 
-          className="h-12 rounded-xl border-gray-200 focus:border-primary focus:ring-primary/5 bg-white transition-all"
-        />
-      </FormControl>
-      <FormMessage className="text-[10px] uppercase font-bold tracking-tight" />
-    </FormItem>
-  )} 
-/>
-                
+                <FormField control={form.control} name="data_admissao" render={({ field }) => (
+                  <FormItem><FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Data de Admissão</FormLabel>
+                  <FormControl><Input {...field} type="date" className="h-12 rounded-xl" /></FormControl></FormItem>
+                )} />
               </CardContent>
             </Card>
 
             <div className="flex justify-center md:justify-end pt-6">
-              <Button 
-                type="submit" 
-                disabled={isLoading} 
-                className="w-full md:w-auto h-16 px-12 rounded-full bg-navy-dark hover:bg-primary text-white font-bold tracking-widest transition-all shadow-xl shadow-navy-dark/20"
-              >
-                {isLoading ? (
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                ) : (
-                  <ArrowRight className="mr-2 h-5 w-5" />
-                )}
+              <Button type="submit" disabled={isLoading} className="w-full md:w-auto h-16 px-12 rounded-full bg-navy-dark hover:bg-primary text-white font-bold">
+                {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <ArrowRight className="mr-2 h-5 w-5" />}
                 {isLoading ? 'SALVANDO...' : 'ATUALIZAR MEU PERFIL'}
               </Button>
             </div>

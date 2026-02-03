@@ -31,7 +31,7 @@ const RedefinirSenhaPage = () => {
         }
         setLoading(true);
         try {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://gkw48gcsck08ggo0o8cw0cow.31.97.175.190.sslip.io';
             const response = await axios.post(`${apiUrl}/api/auth/reset-password`, {
                 token: token,
                 new_password: password,
