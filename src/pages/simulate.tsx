@@ -18,6 +18,7 @@ import Header from '@/components/Header';
 import InputMask from 'react-input-mask';
 import CurrencyInput from 'react-currency-input-field'
 import { AxiosError } from 'axios';
+import Footer from '@/components/Footer';
 
 
 type SpecificQuestionsProps = {
@@ -982,7 +983,7 @@ const SimulacaoPage = () => {
 
         msg += `Tenho interesse em dar prosseguimento ao meu crédito!`;
 
-        window.open(`https://wa.me/5535988284302?text=${encodeURIComponent(msg.trim())}`, '_blank');
+        window.open(`https://wa.me/5535997446658?text=${encodeURIComponent(msg.trim())}`, '_blank');
 
 
       } else {
@@ -1225,6 +1226,7 @@ const SimulacaoPage = () => {
           </CardContent>
         </Card>
       </div>
+      <Footer />
     </>
   );
 };

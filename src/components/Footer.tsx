@@ -1,86 +1,84 @@
-import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+import { Clock, Facebook, Instagram, Linkedin, MapPin, Youtube } from "lucide-react";
 import { Link } from "react-router-dom"; 
 import { menuData } from "../lib/MenuData";
 
 const Footer = () => {
-  const footerSections = [
-    {
-      title: "Para você",
-      links: [
-        { label: "Home Equity", href: "/produto/home-equity" },
-        { label: "Crédito Consignado", href: "/produto/consignado" },
-        { label: "Empréstimo Pessoal", href: "/produto/pessoal" }
-      ]
-    },
-    {
-      title: "Para seu negócio", 
-      links: [
-        { label: "Capital de Giro", href: "/produto/capital-giro" },
-        { label: "Antecipação de Recebíveis", href: "/produto/antecipacao" },
-        { label: "Trava de Maquininha", href: "/produto/trava-maquininha" }
-      ]
-    },
-    {
-      title: "A Metropolitan",
-      links: [
-        { label: "Quem somos", href: "/sobre" },
-        { label: "Como funciona", href: "/ajuda" },
-        { label: "Segurança", href: "/seguranca" },
-        { label: "Seja parceiro", href: "/parceiro" }
-      ]
-    }
-  ];
+ 
 
   return (
     <footer className="bg-navy-dark text-white">
-      <div className="container-custom py-16">
-        <div className="grid lg:grid-cols-6 gap-8 text-left">
-          {/* Logo and Description */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="text-2xl font-bold">
-              <span className="text-white">Metropolitan</span>
+      <div className="container-custom py-16 justify-center ">
+         <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+
+          <div className="lg:col-span-4 space-y-8">
+            <div className="flex flex-col">
+              <span className="text-2xl font-black tracking-tighter uppercase leading-none">Metropolitan</span>
+              <span className="text-[10px] font-bold text-primary tracking-[0.4em] uppercase mt-1">Securitizadora</span>
             </div>
-            <p className="text-gray-300 text-sm leading-relaxed">
-              Crédito inteligente para impulsionar seus sonhos. 
-              Processo 100% digital, seguro e transparente através do modelo de securitização.
+            
+            <p className="text-gray-400 text-sm leading-relaxed max-w-sm font-light">
+              Soluções inteligentes em securitização de ativos, conectando o mercado de capitais aos seus maiores objetivos com agilidade digital e rigor jurídico.
             </p>
 
-           {/*
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+            <div className="space-y-4">
+               <div className="flex items-start gap-3 text-xs text-gray-400">
+                  <MapPin className="h-4 w-4 text-primary shrink-0" />
+                  <span>Rua Alvarina Frota, 55, Santa Luiza<br />Varginha, Minas Gerais</span>
+               </div>
+               <div className="flex items-center gap-3 text-xs text-gray-400">
+                  <Clock className="h-4 w-4 text-primary" />
+                  <span>Segunda a Sexta: 09h às 18h</span>
+               </div>
+            </div>
+
+            <div className="flex gap-4 pt-2">
+              
+              <a href="https://www.facebook.com/profile.php?id=61585138614368" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>*/}
+              <a href="https://www.instagram.com/metropolitan.securitizadora/" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
 
+                <Instagram className="w-5 h-5" />
+
+              </a>
+
+              <a href="#" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+
+                <Linkedin className="w-5 h-5" />
+
+              </a>
+
+            </div>
           </div>
 
-      
-          {menuData.map((section, index) => (
-            <div key={index} className="space-y-4">
-              <h3 className="font-semibold text-lg border-b border-white/10 pb-2">{section.label}</h3>
-              <ul className="space-y-3">
-                {section.items.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <Link 
-                      to={link.href} 
-                      className="text-gray-400 hover:text-primary transition-colors text-sm block py-1"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Colunas Dinâmicas: Navegação */}
+          <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-8">
+            {menuData.map((section, index) => (
+              <div key={index} className="space-y-6">
+                <h3 className="text-[11px] font-black text-white uppercase tracking-[0.2em] border-l-2 border-primary pl-4">
+                  {section.label}
+                </h3>
+                <ul className="space-y-4">
+                  {section.items.map((link, linkIndex) => (
+                    <li key={linkIndex}>
+                      <Link 
+                        to={link.href} 
+                        className="text-gray-400 hover:text-white hover:translate-x-1 transition-all text-sm font-light flex items-center gap-2 group"
+                      >
+                        <div className="h-1 w-1 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-12 pt-8 space-y-6">
+
+        <div className="border-t border-gray-700 mt-10 pt-8 space-y-6">
           <div className="text-[10px] md:text-xs text-gray-400 leading-relaxed space-y-4">
             <p>
               A <strong>Metropolitan Securitizadora S.A.</strong> não é uma instituição financeira. Somos uma companhia securitizadora de ativos financeiros que atua na estruturação de operações de crédito. 
