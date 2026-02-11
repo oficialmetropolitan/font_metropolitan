@@ -864,7 +864,21 @@ const SimulacaoPage = () => {
     }
   });
 
-  // --- LÓGICA DE TROCA DE TIPO (GARANTIA) ---
+const isUnderage = (birthDate: string) => {
+  if (!birthDate) return false;
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  
+  // Ajusta se ainda não fez aniversário no ano corrente
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age < 18;
+};
+
+
   const garantiaSelecionada = useWatch({
     control: form.control,
     name: "possui_garantia"
@@ -891,7 +905,7 @@ const SimulacaoPage = () => {
       const response = await api.post("/api/simulacoes/calcular-imediato", {
         valor_desejado: Number(data.valor_desejado),
         prazo_meses: parseInt(data.prazo_meses),
-        tipo_emprestimo: tipoEfetivo // Enviando o tipo corrigido para o backend
+        tipo_emprestimo: tipoEfetivo 
       });
       setResultado(response.data);
       setShowLeadForm(true);
@@ -907,7 +921,6 @@ const SimulacaoPage = () => {
   const handleFinalizarLead = async (data: SimulacaoFormData, destino: 'whatsapp' | 'login') => {
     setIsLoading(true);
     try {
-      // Tenta recuperar o token para saber se o usuário já está logado
       const token = localStorage.getItem("token");
 
       const payload = {
@@ -917,7 +930,6 @@ const SimulacaoPage = () => {
         tipo_emprestimo: tipoEfetivo,
         dados_entrada: data,
         resultado_simulacao: resultado,
-        // Informação crucial para o backend vincular ao User model
         user_email: data.email
       };
 
@@ -988,7 +1000,6 @@ const SimulacaoPage = () => {
 
       } else {
 
-        // Exemplo do que deve estar no seu navigate da SimulacaoPage
         navigate('/login', {
           state: {
             full_name: data.full_name,
@@ -1001,6 +1012,10 @@ const SimulacaoPage = () => {
     } catch (error) {
       console.error("Erro no salvamento:", (error as AxiosError).response?.data);
       toast.error("Erro ao salvar dados.");
+      if (isUnderage(data.data_nascimento)) {
+    toast.error("Desculpe, você precisa ter pelo menos 18 anos para realizar uma simulação.");
+    return; 
+  }
     } finally {
       setIsLoading(false);
     }
@@ -1060,9 +1075,9 @@ const SimulacaoPage = () => {
   variant="ghost" 
   size="sm" 
   onClick={() => {
-    setResultado(null);      // Remove o card de resultado
-    setShowLeadForm(false);   // Volta para o Passo 1 e 2
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Opcional: sobe a tela para o início
+    setResultado(null);     
+    setShowLeadForm(false);   
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }} 
   className="text-slate-400 hover:text-blue-600 transition-colors"
 >
@@ -1086,10 +1101,9 @@ const SimulacaoPage = () => {
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit((data) => showLeadForm ? handleFinalizarLead(data, 'whatsapp') : handleCalcular(data))} className="space-y-8">
-
                 {!showLeadForm ? (
                   <>
-                    {/* PASSO 1: DADOS FINANCEIROS */}
+
                     <StepSection step={1} title="Dados do Empréstimo">
                       <BigCurrencyField control={form.control} name="valor_desejado" label="Quanto você precisa?" />
 
@@ -1163,7 +1177,7 @@ const SimulacaoPage = () => {
                     </StepSection>
                   </>
                 ) : (
-                  /* PASSO 3: FORMULÁRIO DE LEAD */
+          
                   <StepSection step={3} title="Onde enviamos o resultado?">
                     <div className="space-y-4">
                       <FormField control={form.control} name="full_name" render={({ field }) => (
@@ -1185,9 +1199,30 @@ const SimulacaoPage = () => {
                         )} />
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <FormField control={form.control} name="data_nascimento" render={({ field }) => (
-                          <FormItem><FormLabel>Data de Nascimento</FormLabel><Input type="date" {...field} /></FormItem>
-                        )} />
+                        <FormField 
+  control={form.control} 
+  name="data_nascimento" 
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Data de Nascimento</FormLabel>
+      <FormControl>
+        <Input 
+          type="date" 
+          {...field} 
+        
+          max={new Date().toISOString().split("T")[0]} 
+        />
+      </FormControl>
+     
+      {field.value && isUnderage(field.value) && (
+        <p className="text-sm font-medium text-destructive">
+          É necessário ser maior de 18 anos.
+        </p>
+      )}
+      <FormMessage />
+    </FormItem>
+  )} 
+/>
                         <FormField control={form.control} name="cidade" render={({ field }) => (
                           <FormItem><FormLabel>Cidade</FormLabel><Input {...field} /></FormItem>
                         )} />

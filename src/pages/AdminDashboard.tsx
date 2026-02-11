@@ -309,9 +309,19 @@ useEffect(() => {
   }
 }, [novaTaxa, simSelecionada]);
 
-  const filtrados = solicitacoes.filter(
-    (s) => s.tipo_emprestimo.toLowerCase().includes(busca.toLowerCase()) || s.id.toString().includes(busca)
-  );
+const filtrados = solicitacoes.filter(
+  (s) =>
+    s.tipo_emprestimo.toLowerCase().includes(busca.toLowerCase()) ||
+    s.id.toString().includes(busca)
+);
+
+const solicitacoesUsuariosLogados = filtrados.filter(
+  (s) => !!s.user_id
+);
+
+const solicitacoesSemLogin = filtrados.filter(
+  (s) => !s.user_id
+);
 
   return (
     <div className="min-h-screen bg-[#FBFBFC]">
@@ -342,6 +352,32 @@ useEffect(() => {
                 </Button>
               </div>
             </div>
+   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <Card className="p-6 border-l-4 border-l-blue-600 shadow-sm">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Clientes Logados</p>
+                  <h3 className="text-3xl font-black text-navy-dark">{solicitacoesUsuariosLogados.length}</h3>
+                </div>
+                <div className="bg-blue-100 p-3 rounded-2xl text-blue-600">
+                  <User size={24} />
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 border-l-4 border-l-green-600 shadow-sm">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Leads WhatsApp</p>
+                  <h3 className="text-3xl font-black text-navy-dark">{solicitacoesSemLogin.length}</h3>
+                </div>
+                <div className="bg-green-100 p-3 rounded-2xl text-green-600">
+                  <MessageCircle size={24} />
+                </div>
+              </div>
+            </Card>
+          </div>
+            
 
         {/* TABELA PRINCIPAL */}
         <Card className="rounded-[32px] border-none shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden bg-white">
@@ -356,8 +392,16 @@ useEffect(() => {
               </TableRow>
             </TableHeader>
 
-            <TableBody>
-              {filtrados.map((sim) => (
+         <TableBody>
+
+  <TableRow>
+    <TableCell colSpan={5} className="bg-green-50 font-bold text-green-800">
+      Usuários LOGADOS
+    </TableCell>
+  </TableRow>
+
+  {solicitacoesUsuariosLogados.map((sim) => (
+       console.log("Simulação:", sim),
                 <TableRow key={sim.id} className="group hover:bg-gray-50/30 transition-colors">
                   <TableCell className="px-8 font-mono text-xs font-bold text-gray-400">#{sim.id}</TableCell>
                   <TableCell className="py-5">
@@ -446,7 +490,109 @@ useEffect(() => {
                     </Dialog>
                   </TableCell>
                 </TableRow>
+                
+
+
+
+
+              
               ))}
+  <TableRow>
+    <TableCell colSpan={5} className="bg-yellow-50 font-bold text-yellow-800">
+      Usuários SEM LOGIN
+    </TableCell>
+  </TableRow>
+  {solicitacoesSemLogin.map((sim) => (
+               
+                  <TableRow key={sim.id} className="group hover:bg-gray-50/30 transition-colors">
+                  <TableCell className="px-8 font-mono text-xs font-bold text-gray-400">#{sim.id}</TableCell>
+                  <TableCell className="py-5">
+                    <div className="font-bold text-navy-dark capitalize">{sim.tipo_emprestimo.replace(/-/g, ' ')}</div>
+                    <div className="text-[10px] font-bold text-primary mt-1 flex items-center gap-1">
+                      <Calendar size={10} /> {new Date(sim.criado_em).toLocaleDateString()}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-lg font-black text-navy-dark tracking-tighter">
+                    {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(sim.valor_desejado)}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <StatusBadge status={sim.status} />
+                  </TableCell>
+                  <TableCell className="text-right px-8">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="rounded-full hover:bg-primary/5 text-primary font-bold uppercase text-[10px] tracking-widest"
+                          onClick={() => {
+                            carregarUsuario(sim.user_id);
+                            carregarPerfilUsuario(sim.user_id);
+                          }}
+                        >
+                          <Eye size={16} className="mr-2" /> Dossiê
+                        </Button>
+                      </DialogTrigger>
+
+                      <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto rounded-[40px] border-none shadow-2xl p-10">
+                        <DialogHeader className="mb-8">
+                          <div className="flex items-center gap-4">
+                             <div className="h-12 w-12 rounded-2xl bg-navy-dark flex items-center justify-center text-white shadow-xl shadow-navy-dark/10">
+                               <Landmark size={24} />
+                             </div>
+                             <div>
+                               <DialogTitle className="text-3xl font-black tracking-tight text-navy-dark leading-none">Dossiê Estruturado</DialogTitle>
+                               <DialogDescription className="text-xs font-bold uppercase tracking-widest text-primary mt-1">Protocolo de Simulação #{sim.id}</DialogDescription>
+                             </div>
+                          </div>
+                        </DialogHeader>
+
+                        <DetalhesEspecificos
+                          sim={sim}
+                          usuario={usuarios[sim.user_id]}
+                          perfil={perfis[sim.user_id]}
+                        />
+
+                 
+                        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-10 border-t mt-12">
+                          <div className="flex gap-2">
+                             <Button
+                                variant="outline"
+                                className="rounded-full h-12 px-6 font-bold uppercase text-[10px] tracking-widest border-green-900 hover:bg-green-900 "
+                                onClick={() => chamarNoWhatsApp(usuarios[sim.user_id]?.phone || sim.phone)}
+                              >
+                                <MessageCircle size={14} className="mr-2 text-green-600  " /> WhatsApp
+                              </Button>
+                              <Button
+                                variant="outline"
+                                className="rounded-full h-12 px-6 font-bold uppercase text-[10px] tracking-widest border-blue-700"
+                                onClick={() => { setSimSelecionada(sim); setNovaTaxa(sim.taxa || ""); }}
+                              >
+                                <TrendingUp size={14} className="mr-2 text-primary" /> Taxa
+                              </Button>
+                          </div>
+                          
+                          <div className="flex gap-3">
+                            <Button
+                              variant="outline"
+                              onClick={() => reprovarSimulacao(sim.id)}
+                              className="rounded-full h-12 px-8 text-red-500 font-bold uppercase text-[10px] tracking-widest  hover:bg-red-600  border-red-800"
+                            >
+                              Reprovar
+                            </Button>
+                            <Button
+                              onClick={() => aprovarSimulacao(sim.id)}
+                              className="rounded-full h-12 px-10 bg-navy-dark hover:bg-primary text-white font-bold uppercase text-[10px] tracking-widest shadow-lg shadow-navy-dark/10 transition-all"
+                            >
+                              <Check size={16} className="mr-2" /> Aprovar Crédito
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
+                </TableRow>
+  ))}
             </TableBody>
           </Table>
         </Card>

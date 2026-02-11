@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Loader2 } from "lucide-react"; // NOVO: Importando ícone de loading
+import { Eye, EyeOff, Loader2 } from "lucide-react"; 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import axios from "axios";
@@ -16,7 +16,7 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Hook para pegar os dados da rota
+  const location = useLocation(); 
 
   const [formData, setFormData] = useState({
     full_name: "",
@@ -28,6 +28,15 @@ const Register = () => {
     acceptTerms: false
   });
 
+
+  const formatCPF = (value: string) => {
+  return value
+    .replace(/\D/g, "") 
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+    .slice(0, 14); 
+};
 
   useEffect(() => {
 
@@ -43,13 +52,21 @@ const Register = () => {
       }));
     }
   }, [location.state]);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [id]: type === "checkbox" ? checked : value
-    }));
-  };
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { id, value, type, checked } = e.target;
+  
+  let finalValue = type === "checkbox" ? checked : value;
+
+  // Aplica máscara se for o campo CPF
+  if (id === "cpf") {
+    finalValue = formatCPF(value as string);
+  }
+
+  setFormData(prev => ({
+    ...prev,
+    [id]: finalValue
+  }));
+};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,13 +99,29 @@ const Register = () => {
 
       navigate(`/verificar-email?email=${formData.email}`);
 
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        console.error("Erro no registro:", error.response.data);
-        toast.error(error.response.data.detail || "Erro ao criar conta, tente novamente!");
-      } else {
-        toast.error("Ocorreu um erro inesperado. Tente novamente.");
-      }
+    }  catch (error) {
+  if (axios.isAxiosError(error) && error.response) {
+    const errorData = error.response.data;
+
+   
+    if (Array.isArray(errorData.detail)) {
+      const messages = errorData.detail.map(err => {
+       
+        return err.msg || "Erro de validação";
+      });
+      toast.error(messages.join(" | "));
+    } 
+   
+    else if (typeof errorData.detail === "string") {
+      toast.error(errorData.detail);
+    } 
+    else {
+      toast.error("Erro ao criar conta, tente novamente!");
+    }
+  } else {
+    toast.error("Ocorreu um erro inesperado. Tente novamente.");
+  }
+
     } finally {
       setLoading(false);
     }

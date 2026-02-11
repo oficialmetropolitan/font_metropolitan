@@ -8,7 +8,7 @@ const Hero = () => {
     <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="container-custom section-padding">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
+       
           <div className="space-y-8">
             <div className="space-y-2">
               <p className="text-sm font-semibold text-primary tracking-wider uppercase">

@@ -67,28 +67,25 @@ const EditProfilePage = () => {
         });
         const p = response.data;
 
-        // Função para formatar a data para o padrão do input (yyyy-mm-dd)
 const formatToInputDate = (dateString: string | null | undefined) => {
   if (!dateString) return "";
 
   try {
-    // Se já estiver no formato yyyy-mm-dd, retorna direto
+
     if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
       return dateString;
     }
 
-    // Se vier como ISO com hora
     if (dateString.includes("T")) {
       return dateString.split("T")[0];
     }
 
-    // Se vier no formato brasileiro dd/mm/yyyy
     if (dateString.includes("/")) {
       const [day, month, year] = dateString.split("/");
       return `${year}-${month}-${day}`;
     }
 
-    // Última tentativa: converter com Date
+
     const d = new Date(dateString);
     if (!isNaN(d.getTime())) {
       return d.toISOString().split("T")[0];
@@ -103,7 +100,7 @@ console.log("DATA NASCIMENTO DA API:", p.data_nascimento);
 
         reset({
           
-          birthDate: formatToInputDate(p.data_nascimento), // Ajuste aqui para puxar o valor
+          birthDate: formatToInputDate(p.data_nascimento), 
           gender: p.genero || "",
           education: p.escolaridade || "",
           maritalStatus: p.estado_civil || "",
@@ -117,7 +114,7 @@ console.log("DATA NASCIMENTO DA API:", p.data_nascimento);
           state: p.estado || "",
           occupation: p.profissao || "",
           monthlyIncome: Number(p.renda_mensal) || 0,
-          data_admissao: formatToInputDate(p.data_admissao), // Também ajustado para admissão
+          data_admissao: formatToInputDate(p.data_admissao), 
         });
       } catch (error) {
         toast.error("Erro ao carregar dados.");
@@ -150,7 +147,7 @@ console.log("DATA NASCIMENTO DA API:", p.data_nascimento);
     try {
       const token = localStorage.getItem("token");
       const response = await api.put<ProfileResponse>("/api/perfil/me", {
-        data_nascimento: data.birthDate, // Garantindo o envio da data de nascimento
+        data_nascimento: data.birthDate, 
         genero: data.gender,
         escolaridade: data.education,
         estado_civil: data.maritalStatus,
@@ -213,12 +210,12 @@ console.log("DATA NASCIMENTO DA API:", p.data_nascimento);
                 </div>
               </CardHeader>
               <CardContent className="p-8 grid md:grid-cols-2 gap-6">
-                {/* Campo Data de Nascimento */}
+             
                <FormField control={form.control} name="birthDate" render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-xs font-bold uppercase tracking-widest text-gray-400">Nascimento</FormLabel>
                     <FormControl>
-                      {/* Adicionado o value diretamente para garantir a sincronia */}
+                      
                       <Input 
                         {...field} 
                         type="date" 

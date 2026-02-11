@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.bancometropolitan.com.br", // endereço da API FastAPI
+  baseURL: "https://api.bancometropolitan.com.br", 
   headers: {
     "Content-Type": "application/json",
   },
