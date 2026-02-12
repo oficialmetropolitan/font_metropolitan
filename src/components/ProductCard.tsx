@@ -14,19 +14,19 @@ interface ProductCardProps {
 const ProductCard = ({ image, title, description, link }: ProductCardProps) => {
   return (
     <Card className="group relative overflow-hidden rounded-2xl border-none bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full">
-      {/* Container da Imagem com Overlay sutil */}
+    
       <div className="relative overflow-hidden aspect-[16/10]">
         <img 
           src={image} 
           alt={title} 
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
         />
-        {/* Overlay de gradiente para dar profundidade à imagem */}
+     
         <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
       <CardContent className="p-8 flex flex-col flex-grow relative bg-white">
-        {/* Detalhe visual: barrinha colorida que aparece no hover */}
+   
         <div className="absolute top-0 left-8 w-12 h-1 bg-primary transform -translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300" />
 
         <h3 className="font-bold text-xl text-navy-dark mb-3 tracking-tight group-hover:text-primary transition-colors duration-300">
@@ -44,7 +44,7 @@ const ProductCard = ({ image, title, description, link }: ProductCardProps) => {
           >
             <span className="relative">
               Explorar Solução
-              {/* Linha animada embaixo do texto */}
+              
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover/link:w-full" />
             </span>
             <div className="ml-3 p-2 rounded-full bg-gray-50 group-hover/link:bg-primary group-hover/link:text-white transition-all duration-300">
