@@ -13,7 +13,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ image, title, description, link }: ProductCardProps) => {
   return (
-    <Card className="group relative overflow-hidden rounded-2xl border-none bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full">
+    <Card className="group relative overflow-hidden rounded-2xl border-none  shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full">
     
       <div className="relative overflow-hidden aspect-[16/10]">
         <img 
@@ -22,7 +22,7 @@ const ProductCard = ({ image, title, description, link }: ProductCardProps) => {
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" 
         />
      
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
       <CardContent className="p-8 flex flex-col flex-grow relative bg-white">

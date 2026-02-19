@@ -11,7 +11,9 @@ const SobreNos = () => {
       <Header />
 
       {/* --- HERO: Minimalista & Impactante --- */}
-      <section className="relative pt-44 pb-32 bg-[#0A0F1A] overflow-hidden">
+      <section className="relative pt-44 pb-32  overflow-hidden"  style={{ 
+        background: "linear-gradient(180deg, rgba(3, 19, 236, 1) 0%, rgba(47, 50, 71, 1) 100%)" 
+      }}>
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
         <div className="container-custom relative z-10 justify-center flex flex-col items-start items-center text-center">
           <motion.div

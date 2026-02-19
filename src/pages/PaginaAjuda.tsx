@@ -53,7 +53,9 @@ const PaginaAjuda = () => {
       <Header />
       
 
-<section className="bg-[#1a2a40] pt-24 pb-40 relative overflow-hidden">
+<section className="pt-24 pb-40 relative overflow-hidden"  style={{ 
+        background: "linear-gradient(180deg, rgba(3, 19, 236, 1) 0%, rgba(47, 50, 71, 1) 100%)" 
+      }}>
         <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs><rect width="100%" height="100%" fill="url(#dots)" /></svg>
         </div>

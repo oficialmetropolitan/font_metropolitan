@@ -107,13 +107,11 @@ const BigCurrencyField = ({ control, name, label }: BigCurrencyFieldProps) => (
         <FormControl>
           <div className="relative group">
             <CurrencyInput
-
               value={typeof field.value === 'number' || typeof field.value === 'string' ? field.value : ""}
               onValueChange={(value) => field.onChange(value ? parseFloat(value) : 0)}
-              intlConfig={{ locale: 'pt-BR', currency: 'BRL' }}
               customInput={Input}
               className="text-5xl md:text-5xl font-black border-0 border-b-2 border-gray-400 rounded-none focus-visible:ring-0 focus-visible:border-primary px-0 py-8 bg-transparent transition-all placeholder:text-gray-600"
-              placeholder="R$ 0"
+              placeholder="R$ 00,00"
             />
           </div>
         </FormControl>
@@ -1024,7 +1022,7 @@ const isUnderage = (birthDate: string) => {
   return (
     <>
       <Header />
-      <div className="container max-w-4xl mx-auto py-12 md:py-24 px-4">
+      <div className="container max-w-4xl mx-auto py-12 md:py-24 px-4"  >
         {resultado && (
           <Card className="mb-8 border-2 border-blue-500 bg-white shadow-lg animate-in zoom-in-95 duration-500">
             <CardContent className="pt-6">

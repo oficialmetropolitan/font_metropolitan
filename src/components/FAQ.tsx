@@ -46,7 +46,7 @@ const FAQ = () => {
 
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-10 mb-16">
             {faqs.map((faq, index) => (
-              <Link to="/ajuda" key={index} className="group">
+               <a  href="/ajuda" key={index} className="group">
                 <div className="space-y-4 p-2 transition-all duration-300">
                   <div className="flex items-center justify-between border-b border-gray-100 pb-4 group-hover:border-primary transition-colors">
                     <h3 className="font-bold text-lg text-navy-dark group-hover:text-primary transition-colors pr-4">
@@ -58,19 +58,19 @@ const FAQ = () => {
                     {faq.answer}
                   </p>
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
 
           <div className="flex flex-col items-center gap-12">
-            <Link to="/ajuda">
+             <a  href="/ajuda">
               <Button variant="ghost" className="text-navy-dark font-bold hover:bg-transparent hover:text-primary p-0 flex items-center gap-2 group">
                 CENTRAL DE AJUDA COMPLETA 
                 <span className="w-8 h-8 rounded-full bg-navy-dark text-white flex items-center justify-center group-hover:bg-primary transition-colors">
                     <ChevronRight className="h-4 w-4" />
                 </span>
               </Button>
-            </Link>
+            </a>
             
             <div className="w-full max-w-3xl bg-navy-dark rounded-3xl p-10 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
               {/* Efeito de luz no card de contato */}
@@ -82,12 +82,12 @@ const FAQ = () => {
                   Nossos especialistas em estruturação de crédito estão à disposição para um atendimento humanizado e personalizado.
                 </p>
                 <div className="pt-4">
-                  <Link to="/contato">
+                 <a  href="/contato">
                     <Button className="bg-primary hover:bg-white hover:text-navy-dark text-white px-8 py-7 rounded-full text-sm font-bold tracking-widest transition-all duration-500 shadow-xl">
                       <MessageCircle className="mr-2 h-5 w-5" />
                       FALAR COM UM ESPECIALISTA
                     </Button>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

@@ -75,20 +75,20 @@ const Header = () => {
               <nav className="hidden lg:flex items-center space-x-1">
                 {menuData.map((item, index) => (
                   <div key={index} className="relative group px-2">
-                    <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-500 uppercase tracking-widest hover:text-navy-dark">
+                    <button className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-gray-500 uppercase tracking-widest hover:text-navy-dark ">
                       {item.label}
                       <ChevronDown className="h-3 w-3 group-hover:rotate-180 transition-transform" />
                     </button>
                     
-                    <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 overflow-hidden">
+                    <div className=" absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 translate-y-2 group-hover:translate-y-0 overflow-hidden">
                       <div className="p-2">
                         {item.items.map((subItem, subIndex) => (
                           <Link 
                             key={subIndex} 
                             to={subItem.href} 
-                            className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors"
+                            className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-gray-50 transition-colors "
                           >
-                            <span className="text-sm font-medium text-gray-600">{subItem.label}</span>
+                            <span className="  text-sm font-medium text-gray-600">{subItem.label}</span>
                           </Link>
                         ))}
                       </div>

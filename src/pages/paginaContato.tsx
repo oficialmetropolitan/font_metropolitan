@@ -61,7 +61,13 @@ const PaginaContato = () => {
       <Header />
 
       {/* --- Header de Alto Padrão --- */}
-      <section className="bg-[#10161E] pt-24 pb-40 relative overflow-hidden">
+      <section className=" pt-24 pb-40 relative overflow-hidden"  style={{ 
+        background: "linear-gradient(180deg, rgba(3, 19, 236, 1) 0%, rgba(47, 50, 71, 1) 100%)" 
+      }}>
+                <div className="absolute inset-0 opacity-10">
+          <svg width="100%" height="100%"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs><rect width="100%" height="100%" fill="url(#dots)" /></svg>
+        </div>
+        
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
         <div className="container-custom relative z-10 text-center space-y-4">
           <span className="text-accent font-bold tracking-[0.4em] text-[10px] uppercase text-white ">Contact & Concierge</span>
@@ -83,7 +89,7 @@ const PaginaContato = () => {
               </div>
 
               <div className="space-y-8">
-                <a href="tel:+553597499220" className="flex items-center gap-5 group">
+                <a href="tel:+5535997446658" className="flex items-center gap-5 group">
                   <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500">
                     <Phone className="w-5 h-5" />
                   </div>
@@ -93,7 +99,7 @@ const PaginaContato = () => {
                   </div>
                 </a>
 
-                <a href="https://wa.me/553597499220" target="_blank" rel="noopener noreferrer" className="flex items-center gap-5 group">
+                <a href="https://wa.me/5535997446658?text=Olá! Vim pelo site da Metropolitan e gostaria de receber mais informações sobre as soluções de crédito. Poderia me orientar, por favor?" target="_blank" rel="noopener noreferrer" className="flex items-center gap-5 group">
                   <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all duration-500">
                     <MessageSquare className="w-5 h-5" />
                   </div>

@@ -25,7 +25,7 @@ const ProductTabs = () => {
   };
 
   return (
-    <section id="solucao" className="py-20 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-50 via-white to-white overflow-hidden" >
+    <section id="solucao" className="py-20   bg-[#F8F9FA] from-slate-50 via-white to-white overflow-hidden" >
       <div className="container-custom">
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

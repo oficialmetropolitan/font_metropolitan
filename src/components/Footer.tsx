@@ -92,7 +92,7 @@ const Footer = () => {
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-4 border-t border-white/5">
             <div className="text-xs text-gray-500">
-              © 2024 Metropolitan Securitizadora. Todos os direitos reservados.
+              © 2026 Metropolitan Securitizadora. Todos os direitos reservados. CNPJ - 47.430.801/0001-50
             </div>
             <div className="flex gap-6 text-xs">
               <Link to="/privacidade" className="text-gray-500 hover:text-white transition-colors">Política de Privacidade</Link>
