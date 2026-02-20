@@ -29,6 +29,7 @@ import MySimulationsPage from "./pages/MinhaSimulacaopage";
 import { AdminRoute } from "./components/AdminRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import SobreNos from "./pages/SobreNosPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -48,8 +49,11 @@ const AppRoutes = () => {
 
   // Quando o carregamento terminar, mostre as rotas da aplicação
   return (
+    <>
+    <ScrollToTop />    
     <Routes>
-      <Route path="/" element={<Index />} />
+     
+    <Route path="/" element={<Index />} />
       <Route path="/ajuda" element={<PaginaAjuda />} />
       <Route path="/termoUso" element={<TermodeUsoPage />} />
       <Route path="/privacidade" element={<PrivacidadePage />} />
@@ -101,7 +105,7 @@ const AppRoutes = () => {
   } 
 />
     </Routes>
-    
+    </>
   );
 };
 

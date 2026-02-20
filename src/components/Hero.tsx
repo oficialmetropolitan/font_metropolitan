@@ -34,10 +34,11 @@ const Hero = () => {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-white leading-[1.1]">
                 O crédito que impulsiona seus planos.
               </h1>
-
+{/* 
               <p className="text-base md:text-lg text-gray-100 max-w-lg leading-relaxed font-light">
                 Atuamos na securitização de ativos com agilidade e segurança, conectando suas metas às melhores soluções financeiras do mercado.
               </p>
+              */}
             </div>
 
             {/* CTA Buttons */}
