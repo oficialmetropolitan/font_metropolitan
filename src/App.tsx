@@ -117,7 +117,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ProfileProvider>
-          {/* O AppRoutes agora controla o que é exibido */}
+        
           <AppRoutes />
         </ProfileProvider>
       </BrowserRouter>
