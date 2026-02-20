@@ -1,6 +1,6 @@
 // src/components/ProductCard.tsx
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from 'lucide-react';
 
@@ -12,6 +12,17 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ image, title, description, link }: ProductCardProps) => {
+  const productId = link.split('/').pop();
+
+  const navigate = useNavigate();
+
+const handleNavigation = (e: React.MouseEvent) => {
+  e.preventDefault(); 
+
+  window.scrollTo(0, 0); 
+
+  navigate('/simulacao', { state: { tipo: productId } });
+};
   return (
     <Card className="group relative overflow-hidden rounded-2xl border-none  shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full">
     
@@ -38,19 +49,19 @@ const ProductCard = ({ image, title, description, link }: ProductCardProps) => {
         </p>
 
         <div className="pt-4 border-t border-gray-50">
-          <Link 
-            to={link} 
-            className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-navy-dark group/link"
-          >
-            <span className="relative">
-              Explorar Solução
-              
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover/link:w-full" />
-            </span>
+<a 
+  href="/simulacao" 
+  onClick={handleNavigation}
+  className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-navy-dark group/link"
+>
+  <span className="relative">
+    Simular Agora
+    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover/link:w-full" />
+  </span>
             <div className="ml-3 p-2 rounded-full bg-gray-50 group-hover/link:bg-primary group-hover/link:text-white transition-all duration-300">
               <ArrowRight className="h-4 w-4 transform group-hover/link:translate-x-1 transition-transform" />
             </div>
-          </Link>
+          </a>
         </div>
       </CardContent>
     </Card>
