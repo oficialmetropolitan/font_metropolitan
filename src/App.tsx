@@ -33,12 +33,10 @@ import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
-// 2. Crie um componente para gerenciar as rotas e o estado de carregamento
 const AppRoutes = () => {
-  // Use o hook para saber se o perfil ainda está sendo carregado
+
   const { isLoading } = useProfileContext();
 
-  // Se estiver carregando, mostre um spinner em tela cheia
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-background">
@@ -47,7 +45,7 @@ const AppRoutes = () => {
     );
   }
 
-  // Quando o carregamento terminar, mostre as rotas da aplicação
+
   return (
     <>
     <ScrollToTop />    

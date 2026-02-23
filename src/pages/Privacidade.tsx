@@ -38,11 +38,11 @@ const PrivacidadePage = () => {
           {/* Faixa de Identificação da Empresa */}
           <div className="bg-navy-dark p-6 text-white flex flex-col md:flex-row gap-4 items-center justify-between text-sm">
              <div className="flex items-center gap-3">
-                <MapPin className="h-5 w-5 text-accent" />
+                <MapPin className="h-5 w-5 text-accent text-blue-400" />
                 <span>Sede: Rua Alvarina Frota, 55 - Santa Luiza, Varginha - MG.</span>
              </div>
              <div className="flex items-center gap-3">
-                <Info className="h-5 w-5 text-accent" />
+                <Info className="h-5 w-5 text-accent text-blue-400" />
                 <span>CNPJ: 47.430.801/0001-50</span>
              </div>
           </div>
@@ -53,7 +53,6 @@ const PrivacidadePage = () => {
               Esta política aplica-se ao site e serviços da <strong>Metropolitan</strong>. Atuamos como securitizadora e provedora de serviços comerciais de crédito, tratando seus dados com transparência e segurança "COMO ESTÃO", conforme a Lei Geral de Proteção de Dados (LGPD).
             </p>
 
-            {/* --- Seção 1: Coleta de Dados --- */}
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-navy-dark flex items-center gap-3">
                 <Database className="h-6 w-6 text-primary" />
@@ -71,7 +70,6 @@ const PrivacidadePage = () => {
               </div>
             </div>
 
-            {/* --- Seção 2: Finalidade do Tratamento --- */}
             <div className="space-y-4">
               <h2 className="text-xl font-semibold text-navy-dark flex items-center gap-3">
                 <Target className="h-6 w-6 text-primary" />
@@ -143,7 +141,7 @@ const PrivacidadePage = () => {
             </div>
 
             {/* --- Rodapé Interno --- */}
-            <div className="pt-8 border-t border-gray-100 text-[11px] text-gray-400 text-center uppercase tracking-widest">
+            <div className="pt-8 border-t border-gray-300 text-[11px] text-gray-400 text-center uppercase tracking-widest">
               Aprovado pela Diretoria da Metropolitan Securitizadora S.A.
             </div>
 

@@ -40,10 +40,14 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 /* ==========================================================================
    COMPONENTES DE APOIO (DETALHES DA SIMULAÇÃO)
    ========================================================================== */
 const DetalhesEspecificos = ({ sim, usuario, perfil }) => {
+
+  
   const dados = sim.dados_especificos?.entrada || {};
   if (!sim.tipo_emprestimo) return null;
 
@@ -59,6 +63,8 @@ const DetalhesEspecificos = ({ sim, usuario, perfil }) => {
       <p className="text-sm font-semibold text-navy-dark">{value || "N/A"}</p>
     </div>
   );
+
+
 
   return (
     <>
@@ -323,6 +329,42 @@ const solicitacoesSemLogin = filtrados.filter(
   (s) => !s.user_id
 );
 
+
+const exportarExcel = () => {
+  if (!solicitacoes || solicitacoes.length === 0) {
+    toast.error("Não há dados para exportar.");
+    return;
+  }
+
+ const dadosFormatados = solicitacoes.map((sim) => ({
+  ID: sim.id,
+  Nome: usuarios[sim.user_id]?.full_name || sim.dados_especificos?.entrada?.full_name || "Lead sem cadastro",
+  Modalidade: sim.tipo_emprestimo,
+  Valor_Solicitado: sim.valor_desejado,
+  Prazo_Meses: sim.prazo_meses,
+  Parcela: sim.valor_parcela,
+  Juros_Total: sim.juros_total,
+  Valor_Total: sim.valor_total,
+  Status: sim.status,
+  Criado_Em: new Date(sim.criado_em).toLocaleDateString()
+}));
+
+  const worksheet = XLSX.utils.json_to_sheet(dadosFormatados);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Creditos");
+
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array"
+  });
+
+  const blob = new Blob([excelBuffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  });
+
+  saveAs(blob, "creditos.xlsx");
+};
+
   return (
     <div className="min-h-screen bg-[#FBFBFC]">
       <Header />
@@ -339,7 +381,9 @@ const solicitacoesSemLogin = filtrados.filter(
           <>
             <div className="flex justify-between mb-6">
               <h1 className="text-3xl font-bold">Gestão de Propostas</h1>
-
+              <Button onClick={exportarExcel}>
+  Exportar Excel
+</Button>
               <div className="flex gap-3">
                 <Input
                   placeholder="Buscar..."
@@ -350,6 +394,8 @@ const solicitacoesSemLogin = filtrados.filter(
                 <Button onClick={carregarDados}>
                   <RefreshCcw size={16} />
                 </Button>
+
+
               </div>
             </div>
    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
@@ -379,7 +425,6 @@ const solicitacoesSemLogin = filtrados.filter(
           </div>
             
 
-        {/* TABELA PRINCIPAL */}
         <Card className="rounded-[32px] border-none shadow-[0_20px_50px_rgba(0,0,0,0.04)] overflow-hidden bg-white">
           <Table>
             <TableHeader className="bg-gray-50/50">

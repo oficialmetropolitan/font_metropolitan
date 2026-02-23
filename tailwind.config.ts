@@ -17,6 +17,10 @@ export default {
 				'2xl': '1400px'
 			}
 		},
+		 fontFamily: {
+        // 'voga' é o nome da classe, 'Voga' é o nome definido no @font-face
+        voga: ['Voga', 'serif'], 
+      },
 		extend: {
 			colors: {
 				border: 'hsl(var(--border))',

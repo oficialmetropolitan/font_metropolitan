@@ -71,7 +71,9 @@ const ProductTabs = () => {
               >
                 {section.title}
               </motion.h2>
-                
+
+
+              {/*   
                 <motion.p 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -80,6 +82,9 @@ const ProductTabs = () => {
                 >
                   {section.subtitle}
                 </motion.p>
+
+                */}
+                
               </div>
 
         
@@ -92,7 +97,7 @@ const ProductTabs = () => {
                     transition={{ delay: index * 0.1 + 0.3 }}
                     className="flex justify-center"
                   >
-                    <div className="w-full transition-transform duration-500 hover:-translate-y-2">
+                    <div className="w-full  ml-2 transition-transform duration-500 hover:-translate-y-2">
                       <ProductCard
                         title={product.title}
                         description={product.description}

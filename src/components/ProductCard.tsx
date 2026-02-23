@@ -49,10 +49,7 @@ const handleNavigation = (e: React.MouseEvent) => {
         </p>
 
         <div className="pt-4 border-t border-gray-50">
-<a 
-  href="/simulacao" 
-  onClick={handleNavigation}
-  className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-navy-dark group/link"
+<a  href="/simulacao"  onClick={handleNavigation} className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-navy-dark group/link"
 >
   <span className="relative">
     Simular Agora
