@@ -61,13 +61,13 @@ const PaginaContato = () => {
       <Header />
 
       {/* --- Header de Alto Padrão --- */}
-      <section className=" pt-24 pb-40 relative overflow-hidden"  style={{ 
-        background: "linear-gradient(180deg, rgba(3, 19, 236, 1) 0%, rgba(47, 50, 71, 1) 100%)" 
+      <section className=" pt-24 pb-40 relative overflow-hidden" style={{
+        background: "linear-gradient(180deg, rgba(3, 19, 236, 1) 0%, rgba(47, 50, 71, 1) 100%)"
       }}>
-                <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-10">
           <svg width="100%" height="100%"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs><rect width="100%" height="100%" fill="url(#dots)" /></svg>
         </div>
-        
+
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent"></div>
         <div className="container-custom relative z-10 text-center space-y-4">
           <span className="text-accent font-bold tracking-[0.4em] text-[10px] uppercase text-white ">Contact & Concierge</span>

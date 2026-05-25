@@ -64,13 +64,13 @@ const VerificacaoPage = () => {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -mr-48 -mt-48" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-navy-dark/5 rounded-full blur-[120px] -ml-48 -mb-48" />
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-[440px] z-10 shadow-xl/30"
       >
         {/* Botão Voltar Discreto */}
-        <button 
+        <button
           onClick={() => navigate(-1)}
           className="group flex items-center gap-2 text-gray-400 hover:text-navy-dark transition-colors mb-8 text-xs font-bold uppercase tracking-widest"
         >
@@ -79,25 +79,25 @@ const VerificacaoPage = () => {
         </button>
 
         <div className="bg-white rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-gray-100 p-10 md:p-14 space-y-10">
-          
+
           {/* Header de Segurança */}
-         <div className="text-center space-y-6 max-w-sm mx-auto">
-  <div className="space-y-2">
-    <h1 className="text-3xl font-black text-navy-dark tracking-tight">
-      Verificação Digital
-    </h1>
-    <div className="space-y-3">
-      <p className="text-muted-foreground text-sm leading-relaxed">
-        Enviamos um código de 6 dígitos para:<br />
-        <span className="text-navy-dark font-semibold text-base">{email}</span>
-      </p>
-      
-      <p className="text-xs text-gray-400 font-light leading-snug px-6">
-        Não esqueça de conferir sua caixa de spam. Caso o código não chegue em alguns minutos, você poderá solicitar um novo.
-      </p>
-    </div>
-  </div>
-</div>
+          <div className="text-center space-y-6 max-w-sm mx-auto">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-black text-navy-dark tracking-tight">
+                Verificação Digital
+              </h1>
+              <div className="space-y-3">
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  Enviamos um código de 6 dígitos para:<br />
+                  <span className="text-navy-dark font-semibold text-base">{email}</span>
+                </p>
+
+                <p className="text-xs text-gray-400 font-light leading-snug px-6">
+                  Não esqueça de conferir sua caixa de spam. Caso o código não chegue em alguns minutos, você poderá solicitar um novo.
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Formulário de Código */}
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -117,8 +117,8 @@ const VerificacaoPage = () => {
               </div>
             </div>
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isVerifying || code.length < 6}
               className="w-full h-16 bg-navy-dark hover:bg-primary text-white rounded-2xl font-bold tracking-[0.2em] uppercase text-[10px] transition-all duration-500 shadow-xl shadow-navy-dark/10 disabled:opacity-30"
             >
@@ -147,9 +147,9 @@ const VerificacaoPage = () => {
 
         {/* Footer Institucional Sutil */}
         <div className="mt-10 flex items-center justify-center gap-2 opacity-30 grayscale pointer-events-none">
-           <div className="h-[1px] w-8 bg-gray-400" />
-           <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Metropolitan S.A.</span>
-           <div className="h-[1px] w-8 bg-gray-400" />
+          <div className="h-[1px] w-8 bg-gray-400" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Metropolitan S.A.</span>
+          <div className="h-[1px] w-8 bg-gray-400" />
         </div>
       </motion.div>
     </div>
