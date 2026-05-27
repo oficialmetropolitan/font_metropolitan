@@ -3,9 +3,18 @@ import { UseFormReturn } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"; // FormControl foi removido da importação
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LOAN_CATEGORIES, LOAN_OPTIONS } from '@/lib/loanOptions';
+import { z } from 'zod';
+
+// Exemplo se você usa Zod (ajuste os campos conforme seu schema real)
+const loanFormSchema = z.object({
+  clientCategory: z.string(),
+  loanType: z.string(),
+});
+
+type LoanFormValues = z.infer<typeof loanFormSchema>;
 
 interface LoanCategoryStepProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<LoanFormValues>;
 }
 
 export const LoanCategoryStep: React.FC<LoanCategoryStepProps> = ({ form }) => {
