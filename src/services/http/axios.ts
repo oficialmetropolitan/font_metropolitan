@@ -8,6 +8,14 @@ const api = axios.create({
   },
 });
 
+api.interceptors.request.use((config) => {
+  const session2fa = localStorage.getItem("session_2fa_token");
+  if (session2fa) {
+    config.headers["X-2FA-Session-Token"] = session2fa;
+  }
+  return config;
+});
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
