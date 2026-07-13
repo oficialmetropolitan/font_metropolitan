@@ -30,7 +30,7 @@ import { AdminRoute } from "./components/AdminRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import SobreNos from "./pages/SobreNosPage";
 import ScrollToTop from "./components/ScrollToTop";
-import AIChatWidget from "./components/AIChatWidget";
+// import AIChatWidget from "./components/AIChatWidget";
 
 const queryClient = new QueryClient();
 
@@ -118,7 +118,7 @@ const App = () => (
         <ProfileProvider>
         
           <AppRoutes />
-          <AIChatWidget />
+          {/* <AIChatWidget /> */}
         </ProfileProvider>
       </BrowserRouter>
     </TooltipProvider>
